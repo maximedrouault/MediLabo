@@ -3,9 +3,9 @@ services:
     image: postgres:latest
     restart: always
     environment:
-      POSTGRES_DB: patientdb
-      POSTGRES_USER: ${PATIENT_DB_USERNAME}
-      POSTGRES_PASSWORD: ${PATIENT_DB_PASSWORD}
+      DB_NAME: patientdb
+      DB_USER: ${PATIENT_DB_USERNAME}
+      DB_PASSWORD: ${PATIENT_DB_PASSWORD}
     ports:
       - "5432:5432"
     volumes:
