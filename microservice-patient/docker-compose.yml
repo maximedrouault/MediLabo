@@ -1,0 +1,15 @@
+services:
+  postgresql_db:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_DB: patientdb
+      POSTGRES_USER: ${PATIENT_DB_USERNAME}
+      POSTGRES_PASSWORD: ${PATIENT_DB_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgresql_db_data:/var/lib/postgresql/data
+
+volumes:
+  postgresql_db_data:

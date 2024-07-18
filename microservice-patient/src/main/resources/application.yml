@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: microservice-patient
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/patientdb
+    driverClassName: org.postgresql.Driver
+    username: ${PATIENT_DB_USERNAME}
+    password: ${PATIENT_DB_PASSWORD}
+
+  jpa:
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: create
+
+  sql:
+    init:
+      mode: always
