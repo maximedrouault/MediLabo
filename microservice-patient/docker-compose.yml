@@ -3,13 +3,14 @@ services:
     image: postgres:latest
     restart: always
     environment:
-      DB_NAME: patientdb
-      DB_USER: ${PATIENT_DB_USERNAME}
-      DB_PASSWORD: ${PATIENT_DB_PASSWORD}
+      POSTGRES_DB: ${PATIENT_DB_NAME}
+      POSTGRES_USER: ${PATIENT_DB_USER}
+      POSTGRES_PASSWORD: ${PATIENT_DB_PASSWORD}
     ports:
-      - "5432:5432"
+      - ${PATIENT_DB_PORT}:${PATIENT_DB_PORT}
     volumes:
       - postgresql_db_data:/var/lib/postgresql/data
+      - ./initdb:/docker-entrypoint-initdb.d
 
 volumes:
   postgresql_db_data:
