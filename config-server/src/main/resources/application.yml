@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: config-server
+
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/maximedrouault/medilabo-config-server-repo.git
+
+server:
+  port: 8000
+
+encrypt:
+  key: ${ENCRYPT_KEY}
