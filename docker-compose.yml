@@ -14,6 +14,22 @@ services:
         retries: 30
 
 
+  discovery-server:
+    build:
+      context: ./discovery-server
+      dockerfile: Dockerfile
+    ports:
+      - "8761:8761"
+    depends_on:
+      config-server:
+        condition: service_healthy
+    healthcheck:
+      test: "wget --spider http://discovery-server:8761/actuator/health"
+      interval: 1s
+      timeout: 1s
+      retries: 30
+
+
   patient-db-server:
     image: postgres:latest
     restart: always
@@ -26,6 +42,9 @@ services:
     volumes:
       - patient-db-data:/var/lib/postgresql/data
       - ./microservice-patient/initdb:/docker-entrypoint-initdb.d
+    depends_on:
+      discovery-server:
+        condition: service_healthy
     healthcheck:
       test: "pg_isready -h patient-db-server -p 5432 -U $${POSTGRES_USER}"
       interval: 1s
@@ -41,6 +60,8 @@ services:
       - "9000:9000"
     depends_on:
       config-server:
+        condition: service_healthy
+      discovery-server:
         condition: service_healthy
       patient-db-server:
         condition: service_healthy
