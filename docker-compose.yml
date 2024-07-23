@@ -1,0 +1,55 @@
+services:
+  config-server:
+    build:
+      context: ./config-server
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      ENCRYPT_KEY: ${ENCRYPT_KEY}
+    healthcheck:
+        test: "wget --spider http://config-server:8000/actuator/health"
+        interval: 1s
+        timeout: 1s
+        retries: 30
+
+
+  patient-db-server:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_DB: patientdb
+      POSTGRES_USER: ${PATIENT_DB_USER}
+      POSTGRES_PASSWORD: ${PATIENT_DB_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - patient-db-data:/var/lib/postgresql/data
+      - ./microservice-patient/initdb:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: "pg_isready -h patient-db-server -p 5432 -U $${POSTGRES_USER}"
+      interval: 1s
+      timeout: 1s
+      retries: 30
+
+
+  patient-api:
+    build:
+      context: ./microservice-patient
+      dockerfile: Dockerfile
+    ports:
+      - "9000:9000"
+    depends_on:
+      config-server:
+        condition: service_healthy
+      patient-db-server:
+        condition: service_healthy
+    healthcheck:
+      test: "wget --spider http://patient-api:9000/actuator/health"
+      interval: 1s
+      timeout: 1s
+      retries: 30
+
+
+volumes:
+  patient-db-data:

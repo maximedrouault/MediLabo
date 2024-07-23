@@ -7,9 +7,16 @@ spring:
       server:
         git:
           uri: https://github.com/maximedrouault/medilabo-config-server-repo.git
+          clone-on-start: true
 
 server:
   port: 8000
 
 encrypt:
   key: ${ENCRYPT_KEY}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health"
