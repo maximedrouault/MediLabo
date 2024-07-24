@@ -30,6 +30,24 @@ services:
       retries: 30
 
 
+  gateway-server:
+    build:
+      context: ./gateway-server
+      dockerfile: Dockerfile
+    ports:
+      - "8100:8100"
+    depends_on:
+      config-server:
+        condition: service_healthy
+      discovery-server:
+        condition: service_healthy
+    healthcheck:
+      test: "wget --spider http://gateway-server:8100/actuator/health"
+      interval: 1s
+      timeout: 1s
+      retries: 30
+
+
   patient-db-server:
     image: postgres:latest
     restart: always
@@ -64,6 +82,8 @@ services:
       discovery-server:
         condition: service_healthy
       patient-db-server:
+        condition: service_healthy
+      gateway-server:
         condition: service_healthy
     healthcheck:
       test: "wget --spider http://patient-api:9000/actuator/health"
