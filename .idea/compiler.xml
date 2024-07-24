@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="microservice-patient" />
+        <module name="config-server" />
+        <module name="gateway-server" />
+        <module name="discovery-server" />
+        <module name="microservice-clientui" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="discovery" target="21" />
+      <module name="front-server" target="21" />
+      <module name="gateway" target="21" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="config-server" options="-parameters" />
+      <module name="discovery" options="-parameters" />
+      <module name="discovery-server" options="-parameters" />
+      <module name="front-server" options="-parameters" />
+      <module name="gateway" options="-parameters" />
+      <module name="gateway-server" options="-parameters" />
+      <module name="microservice-clientui" options="-parameters" />
+      <module name="microservice-patient" options="-parameters" />
+    </option>
+  </component>
+</project>

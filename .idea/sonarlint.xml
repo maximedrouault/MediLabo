@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SonarLintProjectSettings">
+    <option name="bindingEnabled" value="true" />
+    <option name="moduleMapping">
+      <map>
+        <entry key="microservice-clientui" value="microservices-clientui" />
+        <entry key="microservice-patient" value="mpatient" />
+      </map>
+    </option>
+    <option name="projectKey" value="maximedrouault_MediLabo" />
+    <option name="serverId" value="MaximeProjects" />
+  </component>
+</project>

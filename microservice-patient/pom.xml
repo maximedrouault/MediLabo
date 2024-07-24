@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.medilabo</groupId>
-    <artifactId>mpatient</artifactId>
+    <artifactId>microservice-patient</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>microservice-patient</name>
     <description>microservice-patient</description>

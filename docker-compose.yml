@@ -94,5 +94,29 @@ services:
       retries: 30
 
 
+  client-ui:
+    build:
+      context: ./microservice-clientui
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      config-server:
+        condition: service_healthy
+      gateway-server:
+        condition: service_healthy
+      discovery-server:
+        condition: service_healthy
+      patient-db-server:
+        condition: service_healthy
+      patient-api:
+        condition: service_healthy
+    healthcheck:
+      test: "wget --spider http://localhost:8080/actuator/health"
+      interval: 1s
+      timeout: 1s
+      retries: 30
+
+
 volumes:
   patient-db-data:

@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: microservice-clientui
+
+  cloud:
+    config:
+      uri: http://config-server:8000
+      fail-fast: true
