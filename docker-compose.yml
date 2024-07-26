@@ -7,11 +7,12 @@ services:
       - "8000:8000"
     environment:
       ENCRYPT_KEY: ${ENCRYPT_KEY}
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
     healthcheck:
         test: "wget --spider http://localhost:8000/actuator/health"
         interval: 1s
         timeout: 1s
-        retries: 30
+        retries: 60
 
 
   discovery-server:
@@ -20,6 +21,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8761:8761"
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
     depends_on:
       config-server:
         condition: service_healthy
@@ -27,7 +30,7 @@ services:
       test: "wget --spider http://localhost:8761/actuator/health"
       interval: 1s
       timeout: 1s
-      retries: 30
+      retries: 60
 
 
   gateway-server:
@@ -36,6 +39,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8100:8100"
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
     depends_on:
       config-server:
         condition: service_healthy
@@ -45,7 +50,7 @@ services:
       test: "wget --spider http://localhost:8100/actuator/health"
       interval: 1s
       timeout: 1s
-      retries: 30
+      retries: 60
 
 
   patient-db-server:
@@ -55,6 +60,7 @@ services:
       POSTGRES_DB: patientdb
       POSTGRES_USER: ${PATIENT_DB_USER}
       POSTGRES_PASSWORD: ${PATIENT_DB_PASSWORD}
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
     ports:
       - "5432:5432"
     volumes:
@@ -67,7 +73,7 @@ services:
       test: "pg_isready -h patient-db-server -p 5432 -U $${POSTGRES_USER}"
       interval: 1s
       timeout: 1s
-      retries: 30
+      retries: 60
 
 
   patient-api:
@@ -75,9 +81,11 @@ services:
       context: ./microservice-patient
       dockerfile: Dockerfile
     ports:
-      - "0:9000"
+      - "9000:9000"
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
     deploy:
-      replicas: 2
+      replicas: 1
     depends_on:
       config-server:
         condition: service_healthy
@@ -91,7 +99,7 @@ services:
       test: "wget --spider http://localhost:9000/actuator/health"
       interval: 1s
       timeout: 1s
-      retries: 30
+      retries: 60
 
 
   client-ui:
@@ -100,6 +108,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
     depends_on:
       config-server:
         condition: service_healthy
@@ -115,7 +125,7 @@ services:
       test: "wget --spider http://localhost:8080/actuator/health"
       interval: 1s
       timeout: 1s
-      retries: 30
+      retries: 60
 
 
 volumes:
