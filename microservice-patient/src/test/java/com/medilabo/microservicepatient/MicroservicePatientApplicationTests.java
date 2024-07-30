@@ -1,4 +1,4 @@
-package com.medilabo.mpatient;
+package com.medilabo.microservicepatient;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

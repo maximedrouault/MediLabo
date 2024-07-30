@@ -1,4 +1,4 @@
-package com.medilabo.mpatient;
+package com.medilabo.microservicepatient;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

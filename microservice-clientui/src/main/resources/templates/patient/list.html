@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Patients</title>
+    <!--Import CSS bootstrap-->
+    <link rel="stylesheet" href="/webjars/bootstrap/5.3.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/webjars/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="col text-center">
+            <div class="row mt-5">
+                <h1>Application Medilabo</h1>
+            </div>
+            <div class="row mt-3">
+                <h1>List of patients</h1>
+            </div>
+            <div class="row">
+                <div class="col-md-8 mx-auto mt-5">
+                    <div class="row text-start">
+                        <a href="/patient/add" class="btn btn-primary w-auto mb-4">Add a patient</a>
+                    </div>
+                    <div class="row">
+                        <table class="table table-bordered align-middle">
+                            <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Lastname</th>
+                                <th>Firstname</th>
+                                <th>Date Of Birth</th>
+                                <th>Gender</th>
+                                <th>Address</th>
+                                <th>Telephone Number</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="patient : ${patients}">
+                                <td th:text="${patient.id}"></td>
+                                <td th:text="${patient.lastName}"></td>
+                                <td th:text="${patient.firstName}"></td>
+                                <td th:text="${patient.dateOfBirth}"></td>
+                                <td th:text="${patient.gender}"></td>
+                                <td th:text="${patient.address}"></td>
+                                <td th:text="${patient.telephoneNumber}"></td>
+                                <td class="fs-3">
+                                    <a th:href="@{|/patient/update/${patient.id}|}" class="text-decoration-none me-3">
+                                        <i class="bi bi-pencil-fill text-primary"></i>
+                                    </a>
+                                    <a th:href="@{|/patient/delete/${patient.id}|}">
+                                        <i class="bi bi-trash-fill text-danger"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Import bootstrap JS-->
+    <script src="/webjars/bootstrap/5.3.3/js/bootstrap.min.js"></script>
+</body>
+</html>

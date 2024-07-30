@@ -1,7 +1,7 @@
-package com.medilabo.mpatient.controller;
+package com.medilabo.microservicepatient.controller;
 
-import com.medilabo.mpatient.model.Patient;
-import com.medilabo.mpatient.repository.PatientRepository;
+import com.medilabo.microservicepatient.model.Patient;
+import com.medilabo.microservicepatient.repository.PatientRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,17 +12,18 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/patient")
 public class PatientController {
 
     private final PatientRepository patientRepository;
 
 
-    @GetMapping("/patients")
+    @GetMapping("/list")
     public ResponseEntity<List<Patient>> getAllPatients() {
         return new ResponseEntity<>(patientRepository.findAll(), HttpStatus.OK);
     }
 
-    @GetMapping("/patient/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Patient> getPatientById(@PathVariable Long id) {
         Optional<Patient> patientOptional = patientRepository.findById(id);
 
@@ -31,14 +32,14 @@ public class PatientController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PostMapping("/patient")
-    public ResponseEntity<Patient> createPatient(@RequestBody Patient patient) {
+    @PostMapping("/add")
+    public ResponseEntity<Patient> addPatient(@RequestBody Patient patient) {
         Patient patientCreated = patientRepository.save(patient);
 
         return new ResponseEntity<>(patientCreated, HttpStatus.CREATED);
     }
 
-    @PutMapping("/patient/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<Patient> updatePatient(@PathVariable Long id, @RequestBody Patient patientDetails) {
         Optional<Patient> patientOptional = patientRepository.findById(id);
 
@@ -60,7 +61,7 @@ public class PatientController {
         }
     }
 
-    @DeleteMapping("/patient/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deletePatient(@PathVariable Long id) {
         Optional<Patient> patientOptional = patientRepository.findById(id);
 
