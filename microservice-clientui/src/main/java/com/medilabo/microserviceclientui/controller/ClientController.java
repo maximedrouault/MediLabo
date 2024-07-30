@@ -23,7 +23,6 @@ public class ClientController {
     private static final String PATIENTS = "patients";
 
 
-
     @GetMapping("/")
     public String home() {
         return "home";

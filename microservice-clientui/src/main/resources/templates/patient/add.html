@@ -8,16 +8,18 @@
 </head>
 <body>
     <div class="container">
-        <div class="col text-center">
+        <div class="col-8 mx-auto mt-3">
+            <div class="row align-items-center justify-content-between">
+                <div class="col-5">
+                    <img src="/images/logo-medilabo.webp" alt="Logo medilabo" class="w-100">
+                </div>
+                <div class="col-auto mx-auto">
+                    <h1>Add patient</h1>
+                </div>
+            </div>
             <div class="row mt-5">
-                <h1>Application Medilabo</h1>
-            </div>
-            <div class="row mt-3">
-                <h1>Add patient</h1>
-            </div>
-            <div class="row">
-                <div class="col-md-8 mx-auto mt-5 text-start">
-                    <div class="row">
+                <div class="col mt-3">
+                    <div class="row text-start">
                         <form th:action="@{/patient/save}" th:object="${patient}" method="post">
                             <div>
                                 <input class="btn btn-primary w-auto mb-4" type="submit" value="Save the patient">
