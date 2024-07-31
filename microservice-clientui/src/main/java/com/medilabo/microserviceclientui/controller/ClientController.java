@@ -25,7 +25,7 @@ public class ClientController {
 
     @GetMapping("/")
     public String home() {
-        return "home";
+        return "login";
     }
 
     @GetMapping("/patient/list")

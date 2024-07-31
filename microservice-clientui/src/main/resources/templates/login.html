@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <!--Import CSS bootstrap-->
+    <link rel="stylesheet" href="/webjars/bootstrap/5.3.3/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center mt-5">
+            <img src="/images/logo-medilabo.webp" alt="Logo medilabo" class="col-6">
+        </div>
+        <form th:action="@{/login}" method="post">
+            <div class="row justify-content-center mt-5">
+                <div class="col-5">
+                    <div class="input-group mb-5">
+                        <input type="text" class="form-control fs-5" id="username" placeholder="Enter the username" aria-label="username" aria-describedby="username">
+                    </div>
+                    <div class="input-group mb-5">
+                        <input type="password" class="form-control fs-5" id="password" placeholder="Enter the password" aria-label="password" aria-describedby="password">
+                    </div>
+                    <div class="row justify-content-center mt-5 mb-3">
+                        <button type="submit" class="col-5 btn btn-primary fs-5">Login</button>
+                    </div>
+                    <p th:if="${param.error}" class="alert alert-danger text-center mt-5">Invalid username and password</p>
+                    <p th:if="${param.logout}" class="alert alert-success text-center mt-5">Logout successful</p>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!--Import bootstrap JS-->
+    <script src="/webjars/bootstrap/5.3.3/js/bootstrap.min.js"></script>
+</body>
+</html>
