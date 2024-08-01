@@ -78,7 +78,7 @@ services:
       context: ./microservice-patient
       dockerfile: Dockerfile
     ports:
-      - "9000:9000"
+      - "0:9000"
     environment:
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
     deploy:

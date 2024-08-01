@@ -6,18 +6,18 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@FeignClient(name = "microservice-patient", url = "${patient-api.url}")
+@FeignClient(name = "GATEWAY-SERVER", contextId = "patientProxy")
 public interface MicroservicePatientProxy {
 
-    @GetMapping("/patient/list")
+    @GetMapping("/MICROSERVICE-PATIENT/patient/list")
     List<PatientDTO> getAllPatients();
 
-    @GetMapping("/patient/{id}")
+    @GetMapping("/MICROSERVICE-PATIENT/patient/{id}")
     PatientDTO getPatient(@PathVariable Long id);
 
-    @DeleteMapping("/patient/delete/{id}")
+    @DeleteMapping("/MICROSERVICE-PATIENT/patient/delete/{id}")
     void deletePatient(@PathVariable Long id);
 
-    @PostMapping("/patient/add")
+    @PostMapping("/MICROSERVICE-PATIENT/patient/add")
     void savePatient(@RequestBody PatientDTO patient);
 }
