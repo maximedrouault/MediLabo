@@ -37,7 +37,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="dateOfBirth" class="form-label">Date of birth</label>
-                                <input type="date" class="form-control" th:field="*{dateOfBirth}" id="dateOfBirth" name="dateOfBirth">
+                                <input type="date" class="form-control" th:field="*{dateOfBirth}" id="dateOfBirth" name="dateOfBirth" max="9999-12-31">
                                 <p class="text-danger" th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}"></p>
                             </div>
                             <div class="col mb-3">
