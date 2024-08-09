@@ -7,10 +7,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="microservice-patient" />
         <module name="config-server" />
-        <module name="gateway-server" />
         <module name="discovery-server" />
+        <module name="microservice-note" />
+        <module name="microservice-patient" />
+        <module name="gateway-server" />
         <module name="microservice-clientui" />
         <module name="mpatient" />
       </profile>
@@ -30,6 +31,7 @@
       <module name="gateway" options="-parameters" />
       <module name="gateway-server" options="-parameters" />
       <module name="microservice-clientui" options="-parameters" />
+      <module name="microservice-note" options="-parameters" />
       <module name="microservice-patient" options="-parameters" />
       <module name="mpatient" options="-parameters" />
     </option>

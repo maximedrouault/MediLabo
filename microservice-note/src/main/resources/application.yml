@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: microservice-note
+
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: notedb
+      username: root
+      password: root
+      authentication-database: admin
+      auto-index-creation: true

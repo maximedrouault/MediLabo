@@ -27,7 +27,7 @@ public class PatientDTO {
     private String firstName;
 
     @NotNull
-    @Past
+    @PastOrPresent
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateOfBirth;
 

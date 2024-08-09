@@ -6,7 +6,6 @@ services:
       POSTGRES_DB: patientdb
       POSTGRES_USER: ${PATIENT_DB_USER}
       POSTGRES_PASSWORD: ${PATIENT_DB_PASSWORD}
-      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
     ports:
       - "5432:5432"
     volumes:
@@ -19,5 +18,22 @@ services:
       retries: 60
 
 
+  note-db-server:
+    image: mongo:latest
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: notedb
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    volumes:
+      - note-db-data:/data/db
+      - note-db-config:/data/configdb
+      - ./microservice-note/initdb:/docker-entrypoint-initdb.d
+
+
 volumes:
   patient-db-data:
+  note-db-data:
+  note-db-config:
