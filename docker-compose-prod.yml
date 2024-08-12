@@ -10,9 +10,9 @@ services:
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
     healthcheck:
         test: "wget --spider http://localhost:8000/actuator/health"
-        interval: 1s
-        timeout: 1s
-        retries: 60
+        interval: 10s
+        timeout: 5s
+        retries: 5
 
 
   discovery-server:
@@ -28,9 +28,9 @@ services:
         condition: service_healthy
     healthcheck:
       test: "wget --spider http://localhost:8761/actuator/health"
-      interval: 1s
-      timeout: 1s
-      retries: 60
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 
   gateway-server:
@@ -48,9 +48,9 @@ services:
         condition: service_healthy
     healthcheck:
       test: "wget --spider http://localhost:8100/actuator/health"
-      interval: 1s
-      timeout: 1s
-      retries: 60
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 
   patient-db-server:
@@ -67,9 +67,9 @@ services:
       - ./microservice-patient/initdb:/docker-entrypoint-initdb.d
     healthcheck:
       test: "pg_isready -h patient-db-server -p 5432 -U $${POSTGRES_USER}"
-      interval: 1s
-      timeout: 1s
-      retries: 60
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 
   patient-api:
@@ -93,9 +93,9 @@ services:
         condition: service_healthy
     healthcheck:
       test: "wget --spider http://localhost:9000/actuator/health"
-      interval: 1s
-      timeout: 1s
-      retries: 60
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 
   client-ui:
@@ -119,10 +119,32 @@ services:
         condition: service_healthy
     healthcheck:
       test: "wget --spider http://localhost:8080/actuator/health"
-      interval: 1s
-      timeout: 1s
-      retries: 60
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+
+  note-db-server:
+    image: mongo:latest
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: notedb
+      MONGO_INITDB_ROOT_USERNAME: ${NOTE_DB_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${NOTE_DB_PASSWORD}
+    volumes:
+      - note-db-data:/data/db
+      - note-db-config:/data/configdb
+      - ./microservice-note/initdb:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: "mongosh --quiet --eval 'db.runCommand({ ping: 1 })'"
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 
 volumes:
   patient-db-data:
+  note-db-data:
+  note-db-config:

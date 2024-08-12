@@ -13,9 +13,9 @@ services:
       - ./microservice-patient/initdb:/docker-entrypoint-initdb.d
     healthcheck:
       test: "pg_isready -h patient-db-server -p 5432 -U $${POSTGRES_USER}"
-      interval: 1s
-      timeout: 1s
-      retries: 60
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 
   note-db-server:
@@ -31,6 +31,12 @@ services:
       - note-db-data:/data/db
       - note-db-config:/data/configdb
       - ./microservice-note/initdb:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: "mongosh --quiet --eval 'db.runCommand({ ping: 1 })'"
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
 
 
 volumes:
