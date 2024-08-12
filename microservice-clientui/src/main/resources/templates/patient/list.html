@@ -34,10 +34,14 @@
                                 <th>Gender</th>
                                 <th>Address</th>
                                 <th>Telephone Number</th>
-                                <th>Patient infos</th>
+                                <th>Note actions</th>
+                                <th>Patient actions</th>
                             </tr>
                             </thead>
                             <tbody>
+                            <tr th:if="${patients.isEmpty()}">
+                                <td colspan="9">No patient available.</td>
+                            </tr>
                             <tr th:each="patient : ${patients}">
                                 <td th:text="${patient.id}"></td>
                                 <td th:text="${patient.lastName}"></td>
@@ -46,6 +50,14 @@
                                 <td th:text="${patient.gender}"></td>
                                 <td th:text="${patient.address}"></td>
                                 <td th:text="${patient.telephoneNumber}"></td>
+                                <td class="fs-3">
+                                    <a th:href="@{|/note/list/${patient.id}|}" class="text-decoration-none">
+                                        <i class="bi bi-search text-secondary"></i>
+                                    </a>
+                                    <a th:href="@{|/note/add/${patient.id}|}" class="text-decoration-none ms-3">
+                                        <i class="bi bi-file-earmark-plus text-success"></i>
+                                    </a>
+                                </td>
                                 <td class="fs-3">
                                     <a th:href="@{|/patient/update/${patient.id}|}" class="text-decoration-none me-3">
                                         <i class="bi bi-pencil-fill text-primary"></i>

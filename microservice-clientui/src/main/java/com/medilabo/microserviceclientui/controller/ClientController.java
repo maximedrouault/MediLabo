@@ -1,6 +1,8 @@
 package com.medilabo.microserviceclientui.controller;
 
+import com.medilabo.microserviceclientui.dto.NoteDTO;
 import com.medilabo.microserviceclientui.dto.PatientDTO;
+import com.medilabo.microserviceclientui.proxy.MicroserviceNoteProxy;
 import com.medilabo.microserviceclientui.proxy.MicroservicePatientProxy;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ import java.util.List;
 public class ClientController {
 
     private final MicroservicePatientProxy microservicePatientProxy;
+    private final MicroserviceNoteProxy microserviceNoteProxy;
     private static final String REDIRECT_PATIENT_LIST = "redirect:/patient/list";
     private static final String PATIENTS = "patients";
 
@@ -81,5 +84,23 @@ public class ClientController {
         model.addAttribute(PATIENTS, microservicePatientProxy.getAllPatients());
 
         return REDIRECT_PATIENT_LIST;
+    }
+
+    @GetMapping("/note/list/{patientId}")
+    public String noteList(@PathVariable Long patientId, Model model) {
+        PatientDTO patient = microservicePatientProxy.getPatient(patientId);
+        List<NoteDTO> notes = microserviceNoteProxy.getNotesByPatientId(patientId);
+        model.addAttribute("notes", notes);
+        model.addAttribute("patientFirstName", patient.getFirstName());
+        model.addAttribute("patientLastName", patient.getLastName());
+
+        return "note/list";
+    }
+
+    @GetMapping("/note/delete/{patientId}/{noteId}")
+    public String deleteNote(@PathVariable Long patientId, @PathVariable String noteId) {
+        microserviceNoteProxy.deleteNoteById(noteId);
+
+        return "redirect:/note/list/" + patientId;
     }
 }

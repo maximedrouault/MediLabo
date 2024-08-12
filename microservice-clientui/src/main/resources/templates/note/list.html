@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Notes</title>
+    <!--Import CSS bootstrap-->
+    <link rel="stylesheet" href="/webjars/bootstrap/5.3.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/webjars/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="col-8 mx-auto mt-3">
+            <div class="row align-items-center justify-content-between">
+                <div class="col-5">
+                    <img src="/images/logo-medilabo.webp" alt="Logo medilabo" class="w-100">
+                </div>
+                <div class="col-7 text-center">
+                    <h1>Note list for : </h1>
+                    <p th:text="${patientFirstName} + ' ' + ${patientLastName}" class="fs-3"></p>
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="col mt-3">
+                    <div class="row text-start">
+                        <a href="/note/add" class="btn btn-primary w-auto mb-4">Add a note</a>
+                        <a href="/patient/list" class="btn btn-success w-auto mb-4 ms-3">Back to patients</a>
+                    </div>
+                    <div class="row text-center">
+                        <table class="table table-bordered align-middle">
+                            <thead>
+                            <tr>
+                                <th>Patient Id</th>
+                                <th>Creation date / time</th>
+                                <th>Patient name</th>
+                                <th>Note content</th>
+                                <th>Note actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:if="${notes.isEmpty()}">
+                                <td colspan="5">No note available.</td>
+                            </tr>
+                            <tr th:each="note : ${notes}">
+                                <td th:text="${note.patientId}"></td>
+                                <td>
+                                    <span th:text="${note.creationDateTime.toLocalDate()}"></span>
+                                    <span th:text="${note.creationDateTime.toLocalTime().withSecond(0)}"></span>
+                                </td>
+                                <td th:text="${note.patientName}"></td>
+                                <td th:text="${note.noteContent}"></td>
+                                <td class="col-2 fs-3">
+                                    <a th:href="@{|/note/update/${note.patientId}|}" class="text-decoration-none me-3">
+                                        <i class="bi bi-pencil-fill text-primary"></i>
+                                    </a>
+                                    <a th:href="@{|/note/delete/${note.patientId}/${note.id}|}" class="text-decoration-none">
+                                        <i class="bi bi-trash-fill text-danger"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Import bootstrap JS-->
+    <script src="/webjars/bootstrap/5.3.3/js/bootstrap.min.js"></script>
+</body>
+</html>
