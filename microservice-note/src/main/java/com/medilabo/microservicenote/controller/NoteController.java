@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,6 +27,8 @@ public class NoteController {
 
     @PostMapping("/add")
     public ResponseEntity<Note> addNote(@RequestBody Note note) {
+        note.setCreationDateTime(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+
         Note noteCreated = noteRepository.save(note);
 
         return new ResponseEntity<>(noteCreated, HttpStatus.CREATED);
@@ -40,6 +44,7 @@ public class NoteController {
             Note existingNote = noteOptional.get();
 
             existingNote.setPatientId(noteDetails.getPatientId());
+            existingNote.setCreationDateTime(existingNote.getCreationDateTime());
             existingNote.setPatientName(noteDetails.getPatientName());
             existingNote.setNoteContent(noteDetails.getNoteContent());
 
