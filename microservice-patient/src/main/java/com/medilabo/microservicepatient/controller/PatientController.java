@@ -68,7 +68,7 @@ public class PatientController {
         if (patientOptional.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
-            patientRepository.delete(patientOptional.get());
+            patientRepository.deleteById(id);
 
             return new ResponseEntity<>(HttpStatus.OK);
         }
