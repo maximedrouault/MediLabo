@@ -8,64 +8,62 @@
 </head>
 <body>
     <div class="container">
-        <div class="col-8 mx-auto mt-3">
-            <div class="row align-items-center justify-content-between">
-                <div class="col-5">
-                    <img src="/images/logo-medilabo.webp" alt="Logo medilabo" class="w-100">
-                </div>
-                <div class="col-auto mx-auto">
-                    <h1>Add patient</h1>
-                </div>
+        <div class="row align-items-center justify-content-between mt-3">
+            <div class="col-4">
+                <img src="/images/logo-medilabo.webp" alt="Logo medilabo" class="w-100">
             </div>
-            <div class="row mt-5">
-                <div class="col mt-3">
-                    <div class="row text-start">
-                        <form th:action="@{/patient/save}" th:object="${patient}" method="post">
-                            <div>
-                                <input class="btn btn-primary w-auto mb-4" type="submit" value="Save the patient">
-                                <a href="/patient/list" class="btn btn-danger w-auto mb-4 ms-3">Cancel</a>
-                            </div>
-                            <div class="mb-3">
-                                <label for="lastName" class="form-label">Lastname</label>
-                                <input type="text" class="form-control" th:field="*{lastName}" id="lastName" name="lastName" placeholder="Enter lastname">
-                                <p class="text-danger" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></p>
-                            </div>
-                            <div class="mb-3">
-                                <label for="firstName" class="form-label">Firstname</label>
-                                <input type="text" class="form-control" th:field="*{firstName}" id="firstName" name="firstName" placeholder="Enter firstname">
-                                <p class="text-danger" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></p>
-                            </div>
-                            <div class="mb-3">
-                                <label for="dateOfBirth" class="form-label">Date of birth</label>
-                                <input type="date" class="form-control" th:field="*{dateOfBirth}" id="dateOfBirth" name="dateOfBirth" max="9999-12-31">
-                                <p class="text-danger" th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}"></p>
-                            </div>
-                            <div class="col mb-3">
-                                <label class="form-label">Gender</label>
-                                <div class="row">
-                                    <div class="col-auto">
-                                        <input type="radio" th:field="*{gender}" id="genderM" name="gender" value="M">
-                                        <label for="genderM">Male</label>
-                                    </div>
-                                    <div class="col-auto">
-                                        <input type="radio" th:field="*{gender}" id="genderF" name="gender" value="F">
-                                        <label for="genderF">Female</label>
-                                    </div>
-                                    <p class="text-danger" th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"></p>
+            <div class="col-auto">
+                <h1>Add a patient</h1>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-8 mt-3 mx-auto">
+                <div class="row text-start">
+                    <form th:action="@{/patient/save}" th:object="${patient}" method="post">
+                        <div>
+                            <input class="btn btn-primary w-auto mb-4" type="submit" value="Save the patient">
+                            <a href="/patient/list" class="btn btn-danger w-auto mb-4 ms-3">Cancel</a>
+                        </div>
+                        <div class="mb-3">
+                            <label for="lastName" class="form-label">Lastname</label>
+                            <input type="text" class="form-control" th:field="*{lastName}" id="lastName" name="lastName" placeholder="Enter lastname">
+                            <p class="text-danger" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></p>
+                        </div>
+                        <div class="mb-3">
+                            <label for="firstName" class="form-label">Firstname</label>
+                            <input type="text" class="form-control" th:field="*{firstName}" id="firstName" name="firstName" placeholder="Enter firstname">
+                            <p class="text-danger" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></p>
+                        </div>
+                        <div class="mb-3">
+                            <label for="dateOfBirth" class="form-label">Date of birth</label>
+                            <input type="date" class="form-control" th:field="*{dateOfBirth}" id="dateOfBirth" name="dateOfBirth" max="9999-12-31">
+                            <p class="text-danger" th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}"></p>
+                        </div>
+                        <div class="col mb-3">
+                            <label class="form-label">Gender</label>
+                            <div class="row">
+                                <div class="col-auto">
+                                    <input type="radio" th:field="*{gender}" id="genderM" name="gender" value="M">
+                                    <label for="genderM">Male</label>
                                 </div>
+                                <div class="col-auto">
+                                    <input type="radio" th:field="*{gender}" id="genderF" name="gender" value="F">
+                                    <label for="genderF">Female</label>
+                                </div>
+                                <p class="text-danger" th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"></p>
                             </div>
-                            <div class="mb-3">
-                                <label for="address" class="form-label">Address</label>
-                                <input type="text" class="form-control" th:field="*{address}" id="address" name="address" placeholder="Enter address">
-                                <p class="text-danger" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></p>
-                            </div>
-                            <div class="mb-3">
-                                <label for="telephoneNumber" class="form-label">Telephone number</label>
-                                <input type="tel" class="form-control" th:field="*{telephoneNumber}" id="telephoneNumber" name="telephoneNumber" placeholder="Enter telephone number">
-                                <p class="text-danger" th:if="${#fields.hasErrors('telephoneNumber')}" th:errors="*{telephoneNumber}"></p>
-                            </div>
-                        </form>
-                    </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="address" class="form-label">Address</label>
+                            <input type="text" class="form-control" th:field="*{address}" id="address" name="address" placeholder="Enter address">
+                            <p class="text-danger" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></p>
+                        </div>
+                        <div class="mb-3">
+                            <label for="telephoneNumber" class="form-label">Telephone number</label>
+                            <input type="tel" class="form-control" th:field="*{telephoneNumber}" id="telephoneNumber" name="telephoneNumber" placeholder="Enter telephone number">
+                            <p class="text-danger" th:if="${#fields.hasErrors('telephoneNumber')}" th:errors="*{telephoneNumber}"></p>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
