@@ -5,6 +5,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -12,8 +13,14 @@ import java.util.List;
 public interface MicroserviceNoteProxy {
 
     @GetMapping("/MICROSERVICE-NOTE/note/list/{patientId}")
-    List<NoteDTO> getNotesByPatientId(@PathVariable Long patientId);
+    List<NoteDTO> findByPatientIdOrderByCreationDateTimeDesc(@PathVariable Long patientId);
+
+    @GetMapping("/MICROSERVICE-NOTE/note/{id}")
+    NoteDTO getNoteById(@PathVariable String id);
 
     @DeleteMapping("/MICROSERVICE-NOTE/note/delete/{id}")
     void deleteNoteById(@PathVariable String id);
+
+    @GetMapping("/MICROSERVICE-NOTE/note/add")
+    void saveNote(@RequestBody NoteDTO note);
 }

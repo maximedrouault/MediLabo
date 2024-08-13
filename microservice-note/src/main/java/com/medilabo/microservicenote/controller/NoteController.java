@@ -22,7 +22,16 @@ public class NoteController {
 
     @GetMapping("/list/{patientId}")
     public ResponseEntity<List<Note>> getNotesByPatientId(@PathVariable Long patientId) {
-        return new ResponseEntity<>(noteRepository.findByPatientId(patientId), HttpStatus.OK);
+        return new ResponseEntity<>(noteRepository.findByPatientIdOrderByCreationDateTimeDesc(patientId), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Note> getNoteById(@PathVariable String id) {
+        Optional<Note> noteOptional = noteRepository.findById(id);
+
+        return noteOptional.map(note ->
+                new ResponseEntity<>(note, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping("/add")

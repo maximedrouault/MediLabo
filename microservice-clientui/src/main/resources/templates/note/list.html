@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Notes</title>
+    <title>List of note</title>
     <!--Import CSS bootstrap-->
     <link rel="stylesheet" href="/webjars/bootstrap/5.3.3/css/bootstrap.min.css">
     <link rel="stylesheet" href="/webjars/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
@@ -20,7 +20,7 @@
         <div class="row mt-5">
             <div class="col mt-3">
                 <div class="row text-start">
-                    <a href="/note/add" class="btn btn-primary w-auto mb-4">Add a note</a>
+                    <a th:href="@{|/note/add/${patientId}|}" class="btn btn-primary w-auto mb-4">Add a note</a>
                     <a href="/patient/list" class="btn btn-success w-auto mb-4 ms-3">Back to patients</a>
                 </div>
                 <div class="row text-center">
@@ -45,12 +45,18 @@
                                 <span th:text="${note.creationDateTime.toLocalTime().withSecond(0)}"></span>
                             </td>
                             <td th:text="${note.patientName}"></td>
-                            <td th:text="${note.noteContent}"></td>
-                            <td class="col-2 fs-3">
-                                <a th:href="@{|/note/update/${note.patientId}|}" class="text-decoration-none me-3">
+                            <td class="col-6">
+                                <label for="noteContent" class="visually-hidden"></label>
+                                <textarea type="text" rows="3" th:text="${note.noteContent}" class="w-100 form-control" id="noteContent" name="noteContent" readonly></textarea>
+                            </td>
+                            <td class="fs-3">
+                                <a th:href="@{|/note/${note.id}|}" class="text-decoration-none me-3">
+                                    <i class="bi bi-search text-secondary"></i>
+                                </a>
+                                <a th:href="@{|/note/update/${note.id}|}" class="text-decoration-none me-3">
                                     <i class="bi bi-pencil-fill text-primary"></i>
                                 </a>
-                                <a th:href="@{|/note/delete/${note.patientId}/${note.id}|}" class="text-decoration-none">
+                                <a th:href="@{|/note/delete/${note.id}|}" class="text-decoration-none">
                                     <i class="bi bi-trash-fill text-danger"></i>
                                 </a>
                             </td>

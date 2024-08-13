@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface NoteRepository extends MongoRepository<Note, String> {
 
-    List<Note> findByPatientId(Long patientId);
+    List<Note> findByPatientIdOrderByCreationDateTimeDesc(Long patientId);
 }

@@ -16,7 +16,7 @@ public interface MicroservicePatientProxy {
     PatientDTO getPatient(@PathVariable Long id);
 
     @DeleteMapping("/MICROSERVICE-PATIENT/patient/delete/{id}")
-    void deletePatient(@PathVariable Long id);
+    void deletePatientById(@PathVariable Long id);
 
     @PostMapping("/MICROSERVICE-PATIENT/patient/add")
     void savePatient(@RequestBody PatientDTO patient);

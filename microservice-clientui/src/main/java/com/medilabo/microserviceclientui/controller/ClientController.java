@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 
@@ -41,7 +44,7 @@ public class ClientController {
 
     @GetMapping("/patient/delete/{id}")
     public String deletePatient(@PathVariable Long id) {
-        microservicePatientProxy.deletePatient(id);
+        microservicePatientProxy.deletePatientById(id);
 
         return REDIRECT_PATIENT_LIST;
     }
@@ -54,13 +57,12 @@ public class ClientController {
     }
 
     @PostMapping("/patient/save")
-    public String savePatient(@Valid @ModelAttribute("patient") PatientDTO patientDTO, BindingResult result, Model model) {
+    public String savePatient(@Valid @ModelAttribute("patient") PatientDTO patientDTO, BindingResult result) {
         if (result.hasErrors()) {
             return "patient/add";
         }
 
         microservicePatientProxy.savePatient(patientDTO);
-        model.addAttribute(PATIENTS, microservicePatientProxy.getAllPatients());
 
         return REDIRECT_PATIENT_LIST;
     }
@@ -74,22 +76,22 @@ public class ClientController {
     }
 
     @PostMapping("/patient/update/{id}")
-    public String updatePatient(@PathVariable Long id, @Valid @ModelAttribute("patient") PatientDTO patientDTO, BindingResult result, Model model) {
+    public String updatePatient(@PathVariable Long id, @Valid @ModelAttribute("patient") PatientDTO patientDTO, BindingResult result) {
         if (result.hasErrors()) {
             return "patient/update";
         }
 
         patientDTO.setId(id);
         microservicePatientProxy.savePatient(patientDTO);
-        model.addAttribute(PATIENTS, microservicePatientProxy.getAllPatients());
 
         return REDIRECT_PATIENT_LIST;
     }
 
+
     @GetMapping("/note/list/{patientId}")
     public String noteList(@PathVariable Long patientId, Model model) {
         PatientDTO patient = microservicePatientProxy.getPatient(patientId);
-        List<NoteDTO> notes = microserviceNoteProxy.getNotesByPatientId(patientId);
+        List<NoteDTO> notes = microserviceNoteProxy.findByPatientIdOrderByCreationDateTimeDesc(patientId);
         model.addAttribute("notes", notes);
         model.addAttribute("patientFirstName", patient.getFirstName());
         model.addAttribute("patientLastName", patient.getLastName());
@@ -97,10 +99,44 @@ public class ClientController {
         return "note/list";
     }
 
-    @GetMapping("/note/delete/{patientId}/{noteId}")
-    public String deleteNote(@PathVariable Long patientId, @PathVariable String noteId) {
-        microserviceNoteProxy.deleteNoteById(noteId);
+    @GetMapping("/note/{id}")
+    public String noteDetails(@PathVariable String id, Model model) {
+        NoteDTO note = microserviceNoteProxy.getNoteById(id);
+        model.addAttribute("note", note);
 
-        return "redirect:/note/list/" + patientId;
+        return "note/details";
+    }
+
+    @GetMapping("/note/delete/{id}")
+    public String deleteNote(@PathVariable String id) {
+        NoteDTO note = microserviceNoteProxy.getNoteById(id);
+
+        microserviceNoteProxy.deleteNoteById(id);
+
+        return "redirect:/note/list/" + note.getPatientId();
+    }
+
+    @GetMapping("/note/add/{patientId}")
+    public String addNoteForm(@PathVariable Long patientId, Model model) {
+        PatientDTO patient = microservicePatientProxy.getPatient(patientId);
+
+        model.addAttribute("note", NoteDTO.builder()
+                        .patientId(patientId)
+                        .patientName(patient.getLastName())
+                        .creationDateTime(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS))
+                .build());
+
+        return "note/add";
+    }
+
+    @PostMapping("/note/save")
+    public String saveNote(@Valid @ModelAttribute("note") NoteDTO noteDTO, BindingResult result) {
+        if (result.hasErrors()) {
+            return "note/add";
+        }
+
+        microserviceNoteProxy.saveNote(noteDTO);
+
+        return "redirect:/note/list/" + noteDTO.getPatientId();
     }
 }
