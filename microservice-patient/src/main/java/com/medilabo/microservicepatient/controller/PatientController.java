@@ -3,6 +3,7 @@ package com.medilabo.microservicepatient.controller;
 import com.medilabo.microservicepatient.model.Patient;
 import com.medilabo.microservicepatient.repository.PatientRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,8 @@ public class PatientController {
 
     @GetMapping("/list")
     public ResponseEntity<List<Patient>> getAllPatients() {
-        return new ResponseEntity<>(patientRepository.findAll(), HttpStatus.OK);
+        List<Patient> patients = patientRepository.findAll(Sort.by(Sort.Direction.ASC, "lastName"));
+        return new ResponseEntity<>(patients, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

@@ -139,4 +139,24 @@ public class ClientController {
 
         return "redirect:/note/list/" + noteDTO.getPatientId();
     }
+
+    @GetMapping("/note/update/{id}")
+    public String updateNoteForm(@PathVariable String id, Model model) {
+        NoteDTO note = microserviceNoteProxy.getNoteById(id);
+        model.addAttribute("note", note);
+
+        return "note/update";
+    }
+
+    @PostMapping("/note/update/{id}")
+    public String updateNote(@PathVariable String id, @Valid @ModelAttribute("note") NoteDTO noteDTO, BindingResult result) {
+        if (result.hasErrors()) {
+            return "note/update";
+        }
+
+        noteDTO.setId(id);
+        microserviceNoteProxy.saveNote(noteDTO);
+
+        return "redirect:/note/list/" + noteDTO.getPatientId();
+    }
 }

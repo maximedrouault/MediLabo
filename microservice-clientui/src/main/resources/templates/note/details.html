@@ -23,6 +23,7 @@
                         <a th:href="@{|/note/list/${note.patientId}|}" class="btn btn-primary w-auto mb-4">Return to note list</a>
                     </div>
                     <div class="mb-3">
+                        <h2 class="fs-3" th:text="'Note of : ' + ${note.creationDateTime.toLocalDate()} + ' at ' + ${note.creationDateTime.toLocalTime().withSecond(0)}"></h2>
                         <label for="noteContent" class="form-label">Note content :</label>
                         <textarea type="text" class="form-control" rows="15" th:text="${note.noteContent}" id="noteContent" name="noteContent" readonly></textarea>
                     </div>
