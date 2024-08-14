@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 
@@ -36,8 +34,8 @@ public class ClientController {
 
     @GetMapping("/patient/list")
     public String patientList(Model model) {
-        List<PatientDTO> patients = microservicePatientProxy.getAllPatients();
-        model.addAttribute(PATIENTS, patients);
+        List<PatientDTO> patientDTOS = microservicePatientProxy.getAllPatients();
+        model.addAttribute(PATIENTS, patientDTOS);
 
         return "patient/list";
     }
@@ -75,14 +73,13 @@ public class ClientController {
         return "patient/update";
     }
 
-    @PostMapping("/patient/update/{id}")
-    public String updatePatient(@PathVariable Long id, @Valid @ModelAttribute("patient") PatientDTO patientDTO, BindingResult result) {
+    @PostMapping("/patient/update")
+    public String updatePatient(@Valid @ModelAttribute("patient") PatientDTO patientDTO, BindingResult result) {
         if (result.hasErrors()) {
             return "patient/update";
         }
 
-        patientDTO.setId(id);
-        microservicePatientProxy.savePatient(patientDTO);
+        microservicePatientProxy.updatePatient(patientDTO);
 
         return REDIRECT_PATIENT_LIST;
     }
@@ -90,40 +87,39 @@ public class ClientController {
 
     @GetMapping("/note/list/{patientId}")
     public String noteList(@PathVariable Long patientId, Model model) {
-        PatientDTO patient = microservicePatientProxy.getPatient(patientId);
-        List<NoteDTO> notes = microserviceNoteProxy.findByPatientIdOrderByCreationDateTimeDesc(patientId);
-        model.addAttribute("notes", notes);
-        model.addAttribute("patientFirstName", patient.getFirstName());
-        model.addAttribute("patientLastName", patient.getLastName());
+        PatientDTO patientDTO = microservicePatientProxy.getPatient(patientId);
+        List<NoteDTO> noteDTOS = microserviceNoteProxy.findByPatientIdOrderByCreationDateTimeDesc(patientId);
+        model.addAttribute("notes", noteDTOS);
+        model.addAttribute("patientFirstName", patientDTO.getFirstName());
+        model.addAttribute("patientLastName", patientDTO.getLastName());
 
         return "note/list";
     }
 
     @GetMapping("/note/{id}")
     public String noteDetails(@PathVariable String id, Model model) {
-        NoteDTO note = microserviceNoteProxy.getNoteById(id);
-        model.addAttribute("note", note);
+        NoteDTO noteDTO = microserviceNoteProxy.getNoteById(id);
+        model.addAttribute("note", noteDTO);
 
         return "note/details";
     }
 
     @GetMapping("/note/delete/{id}")
     public String deleteNote(@PathVariable String id) {
-        NoteDTO note = microserviceNoteProxy.getNoteById(id);
+        NoteDTO noteDTO = microserviceNoteProxy.getNoteById(id);
 
         microserviceNoteProxy.deleteNoteById(id);
 
-        return "redirect:/note/list/" + note.getPatientId();
+        return "redirect:/note/list/" + noteDTO.getPatientId();
     }
 
     @GetMapping("/note/add/{patientId}")
     public String addNoteForm(@PathVariable Long patientId, Model model) {
-        PatientDTO patient = microservicePatientProxy.getPatient(patientId);
+        PatientDTO patientDTO = microservicePatientProxy.getPatient(patientId);
 
         model.addAttribute("note", NoteDTO.builder()
                         .patientId(patientId)
-                        .patientName(patient.getLastName())
-                        .creationDateTime(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS))
+                        .patientName(patientDTO.getLastName())
                 .build());
 
         return "note/add";
@@ -142,20 +138,19 @@ public class ClientController {
 
     @GetMapping("/note/update/{id}")
     public String updateNoteForm(@PathVariable String id, Model model) {
-        NoteDTO note = microserviceNoteProxy.getNoteById(id);
-        model.addAttribute("note", note);
+        NoteDTO noteDTO = microserviceNoteProxy.getNoteById(id);
+        model.addAttribute("note", noteDTO);
 
         return "note/update";
     }
 
-    @PostMapping("/note/update/{id}")
-    public String updateNote(@PathVariable String id, @Valid @ModelAttribute("note") NoteDTO noteDTO, BindingResult result) {
+    @PostMapping("/note/update")
+    public String updateNote(@Valid @ModelAttribute("note") NoteDTO noteDTO, BindingResult result) {
         if (result.hasErrors()) {
             return "note/update";
         }
 
-        noteDTO.setId(id);
-        microserviceNoteProxy.saveNote(noteDTO);
+        microserviceNoteProxy.updateNoteById(noteDTO);
 
         return "redirect:/note/list/" + noteDTO.getPatientId();
     }

@@ -2,7 +2,6 @@ package com.medilabo.microserviceclientui.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PastOrPresent;
 import lombok.Builder;
 import lombok.Data;
 
@@ -17,7 +16,6 @@ public class NoteDTO {
     @NotNull
     private Long patientId;
 
-    @PastOrPresent
     private LocalDateTime creationDateTime;
 
     @NotBlank

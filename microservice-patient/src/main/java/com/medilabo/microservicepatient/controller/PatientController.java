@@ -42,9 +42,9 @@ public class PatientController {
         return new ResponseEntity<>(patientCreated, HttpStatus.CREATED);
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<Patient> updatePatient(@PathVariable Long id, @RequestBody Patient patientDetails) {
-        Optional<Patient> patientOptional = patientRepository.findById(id);
+    @PutMapping("/update")
+    public ResponseEntity<Patient> updatePatient(@RequestBody Patient patientDetails) {
+        Optional<Patient> patientOptional = patientRepository.findById(patientDetails.getId());
 
         if (patientOptional.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

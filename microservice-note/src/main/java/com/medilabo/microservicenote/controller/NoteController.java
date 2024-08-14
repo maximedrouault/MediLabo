@@ -45,9 +45,9 @@ public class NoteController {
         return new ResponseEntity<>(noteCreated, HttpStatus.CREATED);
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<Note> updateNoteById(@PathVariable String id, @RequestBody Note noteDetails) {
-        Optional<Note> noteOptional = noteRepository.findById(id);
+    @PutMapping("/update")
+    public ResponseEntity<Note> updateNoteById(@RequestBody Note noteDetails) {
+        Optional<Note> noteOptional = noteRepository.findById(noteDetails.getId());
 
         if (noteOptional.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

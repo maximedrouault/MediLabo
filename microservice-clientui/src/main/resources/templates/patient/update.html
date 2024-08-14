@@ -19,7 +19,7 @@
         <div class="row mt-5">
             <div class="col-8 mt-3 mx-auto">
                 <div class="row text-starts">
-                    <form th:action="@{|/patient/update/${patient.id}|}" th:object="${patient}" method="post">
+                    <form th:action="@{/patient/update}" th:object="${patient}" method="post">
                         <input type="hidden" th:field="*{id}">
                         <div>
                             <input class="btn btn-primary w-auto mb-4" type="submit" value="Update the patient">

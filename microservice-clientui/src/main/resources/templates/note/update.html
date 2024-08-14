@@ -19,7 +19,9 @@
         <div class="row mt-5">
             <div class="col-8 mt-3 mx-auto">
                 <div class="row text-start">
-                    <form th:action="@{|/note/update/${note.id}|}" th:object="${note}" method="post">
+                    <form th:action="@{/note/update}" th:object="${note}" method="post">
+                        <input type="hidden" th:field="*{id}">
+                        <input type="hidden" th:field="*{creationDateTime}">
                         <input type="hidden" th:field="*{patientId}">
                         <input type="hidden" th:field="*{patientName}">
                         <div>
