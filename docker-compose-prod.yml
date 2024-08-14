@@ -3,6 +3,7 @@ services:
     build:
       context: ./config-server
       dockerfile: Dockerfile
+    restart: always
     ports:
       - "8000:8000"
     environment:
@@ -19,6 +20,7 @@ services:
     build:
       context: ./discovery-server
       dockerfile: Dockerfile
+    restart: always
     ports:
       - "8761:8761"
     environment:
@@ -37,6 +39,7 @@ services:
     build:
       context: ./gateway-server
       dockerfile: Dockerfile
+    restart: always
     ports:
       - "8100:8100"
     environment:
@@ -76,6 +79,7 @@ services:
     build:
       context: ./microservice-patient
       dockerfile: Dockerfile
+    restart: always
     ports:
       - "9000:9000"
     environment:
@@ -93,32 +97,6 @@ services:
         condition: service_healthy
     healthcheck:
       test: "wget --spider http://localhost:9000/actuator/health"
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-
-  client-ui:
-    build:
-      context: ./microservice-clientui
-      dockerfile: Dockerfile
-    ports:
-      - "8080:8080"
-    environment:
-      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
-    depends_on:
-      config-server:
-        condition: service_healthy
-      gateway-server:
-        condition: service_healthy
-      discovery-server:
-        condition: service_healthy
-      patient-db-server:
-        condition: service_healthy
-      patient-api:
-        condition: service_healthy
-    healthcheck:
-      test: "wget --spider http://localhost:8080/actuator/health"
       interval: 10s
       timeout: 5s
       retries: 5
@@ -142,6 +120,65 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
+
+  note-api:
+    build:
+      context: ./microservice-note
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "9100:9100"
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
+    deploy:
+      replicas: 1
+    depends_on:
+      config-server:
+        condition: service_healthy
+      discovery-server:
+        condition: service_healthy
+      note-db-server:
+        condition: service_healthy
+      gateway-server:
+        condition: service_healthy
+    healthcheck:
+      test: "wget --spider http://localhost:9100/actuator/health"
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+
+  client-ui:
+    build:
+      context: ./microservice-clientui
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
+    depends_on:
+      config-server:
+        condition: service_healthy
+      gateway-server:
+        condition: service_healthy
+      discovery-server:
+        condition: service_healthy
+      patient-db-server:
+        condition: service_healthy
+      patient-api:
+        condition: service_healthy
+      note-db-server:
+        condition: service_healthy
+      note-api:
+        condition: service_healthy
+    healthcheck:
+      test: "wget --spider http://localhost:8080/actuator/health && wget --spider http://localhost:8080/patient/list"
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 
 
 volumes:

@@ -22,6 +22,7 @@ public class PatientController {
     @GetMapping("/list")
     public ResponseEntity<List<Patient>> getAllPatients() {
         List<Patient> patients = patientRepository.findAll(Sort.by(Sort.Direction.ASC, "lastName"));
+
         return new ResponseEntity<>(patients, HttpStatus.OK);
     }
 
