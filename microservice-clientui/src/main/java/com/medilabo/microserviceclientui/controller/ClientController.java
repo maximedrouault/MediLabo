@@ -29,8 +29,9 @@ public class ClientController {
 
     @GetMapping("/")
     public String home() {
-        return "login";
+        return "redirect:/patient/list";
     }
+
 
     @GetMapping("/patient/list")
     public String patientList(Model model) {

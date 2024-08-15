@@ -9,7 +9,12 @@
 </head>
 <body>
     <div class="container">
-        <div class="row align-items-center justify-content-between mt-3">
+        <div class="row text-end mt-3">
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" class="btn btn-secondary">Logout</button>
+            </form>
+        </div>
+        <div class="row align-items-center justify-content-between">
             <div class="col-4">
                 <img src="/images/logo-medilabo.webp" alt="Logo medilabo" class="w-100">
             </div>
