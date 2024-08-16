@@ -1,12 +1,13 @@
 package com.medilabo.microserviceclientui.proxy;
 
+import com.medilabo.microserviceclientui.config.FeignConfigPatient;
 import com.medilabo.microserviceclientui.dto.PatientDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@FeignClient(name = "GATEWAY-SERVER", contextId = "patientProxy")
+@FeignClient(name = "GATEWAY-SERVER", contextId = "patientProxy", configuration = FeignConfigPatient.class)
 public interface MicroservicePatientProxy {
 
     @GetMapping("/MICROSERVICE-PATIENT/patient/list")

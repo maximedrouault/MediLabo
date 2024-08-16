@@ -14,18 +14,19 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/webjars/bootstrap/**").permitAll()
-                .requestMatchers("/webjars/bootstrap-icons/**").permitAll()
-                .requestMatchers("/images/**").permitAll()
-                .anyRequest().authenticated())
-            .formLogin(form -> form
-                .loginPage("/login")
-                .defaultSuccessUrl("/patient/list", true)
-                .permitAll())
-            .logout(logout -> logout
-                .logoutSuccessUrl("/login?logout")
-                .permitAll());
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/actuator/health").permitAll()
+                        .requestMatchers("/webjars/bootstrap/**").permitAll()
+                        .requestMatchers("/webjars/bootstrap-icons/**").permitAll()
+                        .requestMatchers("/images/**").permitAll()
+                        .anyRequest().authenticated())
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/patient/list", true)
+                        .permitAll())
+                .logout(logout -> logout
+                        .logoutSuccessUrl("/login?logout")
+                        .permitAll());
 
         return http.build();
     }

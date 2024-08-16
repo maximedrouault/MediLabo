@@ -1,12 +1,13 @@
 package com.medilabo.microserviceclientui.proxy;
 
+import com.medilabo.microserviceclientui.config.FeignConfigNote;
 import com.medilabo.microserviceclientui.dto.NoteDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@FeignClient(name = "GATEWAY-SERVER", contextId = "noteProxy")
+@FeignClient(name = "GATEWAY-SERVER", contextId = "noteProxy", configuration = FeignConfigNote.class)
 public interface MicroserviceNoteProxy {
 
     @GetMapping("/MICROSERVICE-NOTE/note/list/{patientId}")
