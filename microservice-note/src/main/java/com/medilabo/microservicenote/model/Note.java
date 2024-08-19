@@ -1,5 +1,7 @@
 package com.medilabo.microservicenote.model;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -16,9 +18,14 @@ public class Note {
     private String id;
 
     @Indexed
+    @NotNull
     private Long patientId;
 
     private LocalDateTime creationDateTime;
+
+    @NotBlank
     private String patientName;
+
+    @NotBlank
     private String noteContent;
 }

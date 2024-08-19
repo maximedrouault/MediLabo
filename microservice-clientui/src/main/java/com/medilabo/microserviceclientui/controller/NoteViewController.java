@@ -19,77 +19,16 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-public class ClientController {
+public class NoteViewController {
 
     private final MicroservicePatientProxy microservicePatientProxy;
     private final MicroserviceNoteProxy microserviceNoteProxy;
-    private static final String REDIRECT_PATIENT_LIST = "redirect:/patient/list";
-    private static final String PATIENTS = "patients";
-
-
-    @GetMapping("/")
-    public String home() {
-        return "redirect:/patient/list";
-    }
-
-
-    @GetMapping("/patient/list")
-    public String patientList(Model model) {
-        List<PatientDTO> patientDTOS = microservicePatientProxy.getAllPatients();
-        model.addAttribute(PATIENTS, patientDTOS);
-
-        return "patient/list";
-    }
-
-    @GetMapping("/patient/delete/{id}")
-    public String deletePatient(@PathVariable Long id) {
-        microservicePatientProxy.deletePatientById(id);
-
-        return REDIRECT_PATIENT_LIST;
-    }
-
-    @GetMapping("/patient/add")
-    public String addPatientForm(Model model) {
-        model.addAttribute("patient", PatientDTO.builder().build());
-
-        return "patient/add";
-    }
-
-    @PostMapping("/patient/save")
-    public String savePatient(@Valid @ModelAttribute("patient") PatientDTO patientDTO, BindingResult result) {
-        if (result.hasErrors()) {
-            return "patient/add";
-        }
-
-        microservicePatientProxy.savePatient(patientDTO);
-
-        return REDIRECT_PATIENT_LIST;
-    }
-
-    @GetMapping("/patient/update/{id}")
-    public String updatePatientForm(@PathVariable Long id, Model model) {
-        PatientDTO patientDTO = microservicePatientProxy.getPatient(id);
-        model.addAttribute("patient", patientDTO);
-
-        return "patient/update";
-    }
-
-    @PostMapping("/patient/update")
-    public String updatePatient(@Valid @ModelAttribute("patient") PatientDTO patientDTO, BindingResult result) {
-        if (result.hasErrors()) {
-            return "patient/update";
-        }
-
-        microservicePatientProxy.updatePatient(patientDTO);
-
-        return REDIRECT_PATIENT_LIST;
-    }
 
 
     @GetMapping("/note/list/{patientId}")
     public String noteList(@PathVariable Long patientId, Model model) {
         PatientDTO patientDTO = microservicePatientProxy.getPatient(patientId);
-        List<NoteDTO> noteDTOS = microserviceNoteProxy.findByPatientIdOrderByCreationDateTimeDesc(patientId);
+        List<NoteDTO> noteDTOS = microserviceNoteProxy.getNotes(patientId);
         model.addAttribute("notes", noteDTOS);
         model.addAttribute("patientFirstName", patientDTO.getFirstName());
         model.addAttribute("patientLastName", patientDTO.getLastName());
@@ -99,7 +38,7 @@ public class ClientController {
 
     @GetMapping("/note/{id}")
     public String noteDetails(@PathVariable String id, Model model) {
-        NoteDTO noteDTO = microserviceNoteProxy.getNoteById(id);
+        NoteDTO noteDTO = microserviceNoteProxy.getNote(id);
         model.addAttribute("note", noteDTO);
 
         return "note/details";
@@ -107,9 +46,9 @@ public class ClientController {
 
     @GetMapping("/note/delete/{id}")
     public String deleteNote(@PathVariable String id) {
-        NoteDTO noteDTO = microserviceNoteProxy.getNoteById(id);
+        NoteDTO noteDTO = microserviceNoteProxy.getNote(id);
 
-        microserviceNoteProxy.deleteNoteById(id);
+        microserviceNoteProxy.deleteNote(id);
 
         return "redirect:/note/list/" + noteDTO.getPatientId();
     }
@@ -139,7 +78,7 @@ public class ClientController {
 
     @GetMapping("/note/update/{id}")
     public String updateNoteForm(@PathVariable String id, Model model) {
-        NoteDTO noteDTO = microserviceNoteProxy.getNoteById(id);
+        NoteDTO noteDTO = microserviceNoteProxy.getNote(id);
         model.addAttribute("note", noteDTO);
 
         return "note/update";
@@ -151,7 +90,7 @@ public class ClientController {
             return "note/update";
         }
 
-        microserviceNoteProxy.updateNoteById(noteDTO);
+        microserviceNoteProxy.updateNote(noteDTO);
 
         return "redirect:/note/list/" + noteDTO.getPatientId();
     }

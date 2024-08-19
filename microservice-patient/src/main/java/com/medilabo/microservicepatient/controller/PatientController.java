@@ -27,7 +27,7 @@ public class PatientController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Patient> getPatientById(@PathVariable Long id) {
+    public ResponseEntity<Patient> getPatient(@PathVariable Long id) {
         Optional<Patient> patientOptional = patientRepository.findById(id);
 
         return patientOptional
@@ -68,9 +68,11 @@ public class PatientController {
     public ResponseEntity<Void> deletePatient(@PathVariable Long id) {
         Optional<Patient> patientOptional = patientRepository.findById(id);
 
+
         if (patientOptional.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
+
             patientRepository.deleteById(id);
 
             return new ResponseEntity<>(HttpStatus.OK);

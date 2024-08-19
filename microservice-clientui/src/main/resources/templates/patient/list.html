@@ -24,8 +24,13 @@
         </div>
         <div class="row mt-5">
             <div class="col mt-3">
-                <div class="row text-start">
-                    <a href="/patient/add" class="btn btn-primary w-auto mb-4">Add a patient</a>
+                <div class="row justify-content-between align-items-center mb-4">
+                    <div class="col p-0">
+                        <a href="/patient/add" class="btn btn-primary">Add a patient</a>
+                    </div>
+                    <div class="col p-0 text-end">
+                        <p class="fs-5 m-0" th:text="'Total number of patients : ' + ${patients.size()}"></p>
+                    </div>
                 </div>
                 <div class="row text-center">
                     <table class="table table-bordered align-middle">

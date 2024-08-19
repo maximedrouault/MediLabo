@@ -29,7 +29,7 @@
                         <input type="hidden" th:field="*{patientName}">
                         <div>
                             <input class="btn btn-primary w-auto mb-4" type="submit" value="Save the note">
-                            <a th:href="@{|/note/list/${patientId}|}" class="btn btn-danger w-auto mb-4 ms-3">Cancel</a>
+                            <a th:href="@{|/note/list/${note.patientId}|}" class="btn btn-danger w-auto mb-4 ms-3">Cancel</a>
                         </div>
                         <div class="mb-3">
                             <label for="noteContent" class="form-label">Note content :</label>
@@ -41,8 +41,5 @@
             </div>
         </div>
     </div>
-
-    <!--Import bootstrap JS-->
-    <script src="/webjars/bootstrap/5.3.3/js/bootstrap.min.js"></script>
 </body>
 </html>

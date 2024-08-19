@@ -18,7 +18,7 @@
                 <img src="/images/logo-medilabo.webp" alt="Logo medilabo" class="w-100">
             </div>
             <div class="col-auto">
-                <h1 th:text="'Note details for : ' + ${note.patientName}"></h1>
+                <h1 th:text="'Note details : ' + ${note.patientName}"></h1>
             </div>
         </div>
         <div class="row mt-5">
@@ -28,7 +28,7 @@
                         <a th:href="@{|/note/list/${note.patientId}|}" class="btn btn-primary w-auto mb-4">Return to note list</a>
                     </div>
                     <div class="mb-3">
-                        <h2 class="fs-3" th:text="'Note of : ' + ${note.creationDateTime.toLocalDate()} + ' at ' + ${note.creationDateTime.toLocalTime().withSecond(0)}"></h2>
+                        <h2 class="fs-3" th:text="'Note from : ' + ${note.creationDateTime.toLocalDate()} + ' at ' + ${note.creationDateTime.toLocalTime().withSecond(0)}"></h2>
                         <label for="noteContent" class="form-label">Note content :</label>
                         <textarea type="text" class="form-control" rows="15" th:text="${note.noteContent}" id="noteContent" name="noteContent" readonly></textarea>
                     </div>
@@ -36,8 +36,5 @@
             </div>
         </div>
     </div>
-
-    <!--Import bootstrap JS-->
-    <script src="/webjars/bootstrap/5.3.3/js/bootstrap.min.js"></script>
 </body>
 </html>

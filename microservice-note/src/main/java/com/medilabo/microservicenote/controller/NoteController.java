@@ -3,12 +3,12 @@ package com.medilabo.microservicenote.controller;
 import com.medilabo.microservicenote.model.Note;
 import com.medilabo.microservicenote.repository.NoteRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,14 +21,14 @@ public class NoteController {
 
 
     @GetMapping("/list/{patientId}")
-    public ResponseEntity<List<Note>> getNotesByPatientId(@PathVariable Long patientId) {
-        List<Note> notes = noteRepository.findByPatientIdOrderByCreationDateTimeDesc(patientId);
+    public ResponseEntity<List<Note>> getNotes(@PathVariable Long patientId) {
+        List<Note> notes = noteRepository.findByPatientId(patientId, Sort.by(Sort.Direction.DESC, "creationDateTime"));
 
         return new ResponseEntity<>(notes, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Note> getNoteById(@PathVariable String id) {
+    public ResponseEntity<Note> getNote(@PathVariable String id) {
         Optional<Note> noteOptional = noteRepository.findById(id);
 
         return noteOptional.map(note ->
@@ -38,7 +38,7 @@ public class NoteController {
 
     @PostMapping("/add")
     public ResponseEntity<Note> addNote(@RequestBody Note note) {
-        note.setCreationDateTime(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+        note.setCreationDateTime(LocalDateTime.now());
 
         Note noteCreated = noteRepository.save(note);
 
@@ -46,7 +46,7 @@ public class NoteController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Note> updateNoteById(@RequestBody Note noteDetails) {
+    public ResponseEntity<Note> updateNote(@RequestBody Note noteDetails) {
         Optional<Note> noteOptional = noteRepository.findById(noteDetails.getId());
 
         if (noteOptional.isEmpty()) {
@@ -66,7 +66,7 @@ public class NoteController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteNoteById(@PathVariable String id) {
+    public ResponseEntity<Void> deleteNote(@PathVariable String id) {
         Optional<Note> noteOptional = noteRepository.findById(id);
 
         if (noteOptional.isEmpty()) {

@@ -24,15 +24,19 @@
         </div>
         <div class="row mt-5">
             <div class="col mt-3">
-                <div class="row text-start">
-                    <a th:href="@{|/note/add/${patientId}|}" class="btn btn-primary w-auto mb-4">Add a note</a>
-                    <a href="/patient/list" class="btn btn-success w-auto mb-4 ms-3">Back to patients</a>
+                <div class="row justify-content-between align-items-center mb-4">
+                    <div class="col p-0">
+                        <a th:href="@{|/note/add/${patientId}|}" class="btn btn-primary w-auto">Add a note</a>
+                        <a href="/patient/list" class="btn btn-success w-auto ms-3">Back to patients</a>
+                    </div>
+                    <div class="col p-0 text-end">
+                        <p class="fs-5 m-0" th:text="'Total number of notes : ' + ${notes.size()}"></p>
+                    </div>
                 </div>
                 <div class="row text-center">
                     <table class="table table-bordered align-middle">
                         <thead>
                         <tr>
-                            <th>Patient Id</th>
                             <th>Creation date-time</th>
                             <th>Patient name</th>
                             <th>Note content</th>
@@ -44,10 +48,9 @@
                             <td colspan="5">No note available.</td>
                         </tr>
                         <tr th:each="note : ${notes}">
-                            <td th:text="${note.patientId}"></td>
                             <td>
                                 <span th:text="${note.creationDateTime.toLocalDate()}"></span>
-                                <span th:text="${note.creationDateTime.toLocalTime().withSecond(0)}"></span>
+                                <span th:text="${note.creationDateTime.toLocalTime().withSecond(0).withNano(0)}"></span>
                             </td>
                             <td th:text="${note.patientName}"></td>
                             <td class="col-6">
@@ -72,8 +75,5 @@
             </div>
         </div>
     </div>
-
-    <!--Import bootstrap JS-->
-    <script src="/webjars/bootstrap/5.3.3/js/bootstrap.min.js"></script>
 </body>
 </html>

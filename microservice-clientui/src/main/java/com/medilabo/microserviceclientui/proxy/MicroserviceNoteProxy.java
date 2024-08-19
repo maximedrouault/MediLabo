@@ -11,17 +11,17 @@ import java.util.List;
 public interface MicroserviceNoteProxy {
 
     @GetMapping("/MICROSERVICE-NOTE/note/list/{patientId}")
-    List<NoteDTO> findByPatientIdOrderByCreationDateTimeDesc(@PathVariable Long patientId);
+    List<NoteDTO> getNotes(@PathVariable Long patientId);
 
     @GetMapping("/MICROSERVICE-NOTE/note/{id}")
-    NoteDTO getNoteById(@PathVariable String id);
+    NoteDTO getNote(@PathVariable String id);
 
     @DeleteMapping("/MICROSERVICE-NOTE/note/delete/{id}")
-    void deleteNoteById(@PathVariable String id);
+    void deleteNote(@PathVariable String id);
 
     @PostMapping("/MICROSERVICE-NOTE/note/add")
     NoteDTO saveNote(@RequestBody NoteDTO note);
 
     @PutMapping("/MICROSERVICE-NOTE/note/update")
-    NoteDTO updateNoteById(@RequestBody NoteDTO noteDetails);
+    NoteDTO updateNote(@RequestBody NoteDTO noteDetails);
 }
