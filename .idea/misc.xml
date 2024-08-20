@@ -15,10 +15,13 @@
         <option value="$PROJECT_DIR$/microservice-clientui/pom.xml" />
         <option value="$PROJECT_DIR$/microservices-clientui/pom.xml" />
         <option value="$PROJECT_DIR$/microservice-note/pom.xml" />
+        <option value="$PROJECT_DIR$/assessment/pom.xml" />
+        <option value="$PROJECT_DIR$/microservice-assessment/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
       <set>
+        <option value="$PROJECT_DIR$/assessment/pom.xml" />
         <option value="$PROJECT_DIR$/discovery/pom.xml" />
         <option value="$PROJECT_DIR$/front-server/pom.xml" />
         <option value="$PROJECT_DIR$/gateway/pom.xml" />

@@ -91,9 +91,9 @@ services:
         condition: service_healthy
       discovery-server:
         condition: service_healthy
-      patient-db-server:
-        condition: service_healthy
       gateway-server:
+        condition: service_healthy
+      patient-db-server:
         condition: service_healthy
     healthcheck:
       test: "wget -qO- http://localhost:9000/actuator/health | grep -q 'UP' || exit 1"
@@ -138,12 +138,45 @@ services:
         condition: service_healthy
       discovery-server:
         condition: service_healthy
-      note-db-server:
-        condition: service_healthy
       gateway-server:
+        condition: service_healthy
+      note-db-server:
         condition: service_healthy
     healthcheck:
       test: "wget -qO- http://localhost:9100/actuator/health | grep -q 'UP' || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+
+  assessment-api:
+    build:
+      context: ./microservice-assessment
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "9200:9200"
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
+    deploy:
+      replicas: 1
+    depends_on:
+      config-server:
+          condition: service_healthy
+      discovery-server:
+          condition: service_healthy
+      gateway-server:
+          condition: service_healthy
+      patient-db-server:
+          condition: service_healthy
+      patient-api:
+          condition: service_healthy
+      note-db-server:
+          condition: service_healthy
+      note-api:
+          condition: service_healthy
+    healthcheck:
+      test: "wget -qO- http://localhost:9200/actuator/health | grep -q 'UP' || exit 1"
       interval: 10s
       timeout: 5s
       retries: 5
@@ -161,9 +194,9 @@ services:
     depends_on:
       config-server:
         condition: service_healthy
-      gateway-server:
-        condition: service_healthy
       discovery-server:
+        condition: service_healthy
+      gateway-server:
         condition: service_healthy
       patient-db-server:
         condition: service_healthy
@@ -174,7 +207,11 @@ services:
       note-api:
         condition: service_healthy
     healthcheck:
-      test: "wget -qO- http://localhost:8080/actuator/health | grep -q 'UP'  || exit 1 && wget -qO- http://gateway-server:8100/MICROSERVICE-PATIENT/actuator/health | grep -q 'UP'  || exit 1 && wget -qO- http://gateway-server:8100/MICROSERVICE-NOTE/actuator/health | grep -q 'UP'  || exit 1"
+      test: |
+        wget -qO- http://localhost:8080/actuator/health | grep -q 'UP' || exit 1
+        wget -qO- http://gateway-server:8100/MICROSERVICE-PATIENT/actuator/health | grep -q 'UP' || exit 1
+        wget -qO- http://gateway-server:8100/MICROSERVICE-NOTE/actuator/health | grep -q 'UP' || exit 1
+        wget -qO- http://gateway-server:8100/MICROSERVICE-ASSESSMENT/actuator/health | grep -q 'UP' || exit 1
       interval: 10s
       timeout: 5s
       retries: 5

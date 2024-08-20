@@ -12,11 +12,13 @@
         <module name="microservice-note" />
         <module name="microservice-patient" />
         <module name="gateway-server" />
+        <module name="microservice-assessment" />
         <module name="microservice-clientui" />
         <module name="mpatient" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="assessment" target="21" />
       <module name="discovery" target="21" />
       <module name="front-server" target="21" />
       <module name="gateway" target="21" />
@@ -24,12 +26,14 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="assessment" options="-parameters" />
       <module name="config-server" options="-parameters" />
       <module name="discovery" options="-parameters" />
       <module name="discovery-server" options="-parameters" />
       <module name="front-server" options="-parameters" />
       <module name="gateway" options="-parameters" />
       <module name="gateway-server" options="-parameters" />
+      <module name="microservice-assessment" options="-parameters" />
       <module name="microservice-clientui" options="-parameters" />
       <module name="microservice-note" options="-parameters" />
       <module name="microservice-patient" options="-parameters" />
