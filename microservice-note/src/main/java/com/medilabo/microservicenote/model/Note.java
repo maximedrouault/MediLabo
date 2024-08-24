@@ -26,6 +26,7 @@ public class Note {
     @NotBlank
     private String patientName;
 
+    @Indexed
     @NotBlank
     private String noteContent;
 }

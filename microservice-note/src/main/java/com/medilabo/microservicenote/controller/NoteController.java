@@ -3,6 +3,7 @@ package com.medilabo.microservicenote.controller;
 import com.medilabo.microservicenote.model.Note;
 import com.medilabo.microservicenote.repository.NoteRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @RequestMapping("/note")
 public class NoteController {
+
+    @Value("${riskTerms}")
+    private String riskTerms;
 
     private final NoteRepository noteRepository;
 
@@ -76,5 +80,12 @@ public class NoteController {
 
             return new ResponseEntity<>(HttpStatus.OK);
         }
+    }
+
+    @GetMapping("/countRiskTerms/{patientId}")
+    public ResponseEntity<Integer> countRiskTerms(@PathVariable Long patientId) {
+        Integer riskTermsFound = noteRepository.countRiskTerms(patientId, riskTerms);
+
+        return new ResponseEntity<>(riskTermsFound, HttpStatus.OK);
     }
 }
