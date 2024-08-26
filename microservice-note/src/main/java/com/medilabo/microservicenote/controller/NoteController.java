@@ -82,6 +82,13 @@ public class NoteController {
         }
     }
 
+    @DeleteMapping("/deleteAll/{patientId}")
+    public ResponseEntity<Void> deleteNotes(@PathVariable Long patientId) {
+        noteRepository.deleteAllByPatientId(patientId);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @GetMapping("/countRiskTerms/{patientId}")
     public ResponseEntity<Integer> countRiskTerms(@PathVariable Long patientId) {
         Integer riskTermsFound = noteRepository.countRiskTerms(patientId, riskTerms).orElse(0);

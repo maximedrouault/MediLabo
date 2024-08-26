@@ -3,6 +3,7 @@ package com.medilabo.microserviceclientui.proxy;
 import com.medilabo.microserviceclientui.config.FeignConfigNote;
 import com.medilabo.microserviceclientui.dto.NoteDTO;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,6 +19,9 @@ public interface MicroserviceNoteProxy {
 
     @DeleteMapping("/MICROSERVICE-NOTE/note/delete/{id}")
     void deleteNote(@PathVariable String id);
+
+    @DeleteMapping("/MICROSERVICE-NOTE/note/deleteAll/{patientId}")
+    ResponseEntity<Void> deleteNotes(@PathVariable Long patientId);
 
     @PostMapping("/MICROSERVICE-NOTE/note/add")
     NoteDTO saveNote(@RequestBody NoteDTO note);

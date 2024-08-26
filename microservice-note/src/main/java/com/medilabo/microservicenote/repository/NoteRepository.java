@@ -22,4 +22,6 @@ public interface NoteRepository extends MongoRepository<Note, String> {
             "{ $project: { _id: 0, riskTermsFound: { $size: '$uniqueTerms' } } }"
     })
     Optional<Integer> countRiskTerms(Long patientId, String riskTerms);
+
+    void deleteAllByPatientId(Long patientId);
 }

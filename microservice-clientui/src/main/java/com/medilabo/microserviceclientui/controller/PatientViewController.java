@@ -1,9 +1,11 @@
 package com.medilabo.microserviceclientui.controller;
 
 import com.medilabo.microserviceclientui.dto.PatientDTO;
+import com.medilabo.microserviceclientui.proxy.MicroserviceNoteProxy;
 import com.medilabo.microserviceclientui.proxy.MicroservicePatientProxy;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,6 +22,7 @@ import java.util.List;
 public class PatientViewController {
 
     private final MicroservicePatientProxy microservicePatientProxy;
+    private final MicroserviceNoteProxy microserviceNoteProxy;
 
 
     @GetMapping("/patient/list")
@@ -32,8 +35,11 @@ public class PatientViewController {
 
     @GetMapping("/patient/delete/{id}")
     public String deletePatient(@PathVariable Long id) {
+        ResponseEntity<Void> response = microserviceNoteProxy.deleteNotes(id);
 
-        microservicePatientProxy.deletePatient(id);
+        if (response.getStatusCode().is2xxSuccessful()) {
+            microservicePatientProxy.deletePatient(id);
+        }
 
         return "redirect:/patient/list";
     }
