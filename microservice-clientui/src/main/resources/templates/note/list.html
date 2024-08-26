@@ -29,6 +29,9 @@
                         <a th:href="@{|/note/add/${patientId}|}" class="btn btn-primary w-auto">Add a note</a>
                         <a href="/patient/list" class="btn btn-success w-auto ms-3">Back to patients</a>
                     </div>
+                    <div class="col-auto">
+                        <p th:text="'Risk level : ' + ${riskLevel.level}" class="m-0"></p>
+                    </div>
                     <div class="col p-0 text-end">
                         <p class="fs-5 m-0" th:text="'Total number of notes : ' + ${notes.size()}"></p>
                     </div>
@@ -37,6 +40,7 @@
                     <table class="table table-bordered align-middle">
                         <thead>
                         <tr>
+                            <th>Nbr</th>
                             <th>Creation date-time</th>
                             <th>Patient name</th>
                             <th>Note content</th>
@@ -47,7 +51,8 @@
                         <tr th:if="${notes.isEmpty()}">
                             <td colspan="5">No note available.</td>
                         </tr>
-                        <tr th:each="note : ${notes}">
+                        <tr th:each="note, iterator : ${notes}">
+                            <td th:text="${iterator.index + 1}"></td>
                             <td>
                                 <span th:text="${note.creationDateTime.toLocalDate()}"></span>
                                 <span th:text="${note.creationDateTime.toLocalTime().withSecond(0).withNano(0)}"></span>

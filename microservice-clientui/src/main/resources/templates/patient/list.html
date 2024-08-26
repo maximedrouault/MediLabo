@@ -36,7 +36,7 @@
                     <table class="table table-bordered align-middle">
                         <thead>
                         <tr>
-                            <th>Id</th>
+                            <th>Nbr</th>
                             <th>Lastname</th>
                             <th>Firstname</th>
                             <th>Date Of Birth</th>
@@ -51,8 +51,8 @@
                         <tr th:if="${patients.isEmpty()}">
                             <td colspan="9">No patient available.</td>
                         </tr>
-                        <tr th:each="patient : ${patients}">
-                            <td th:text="${patient.id}"></td>
+                        <tr th:each="patient, iterator : ${patients}">
+                            <td th:text="${iterator.index + 1}"></td>
                             <td th:text="${patient.lastName}"></td>
                             <td th:text="${patient.firstName}"></td>
                             <td th:text="${patient.dateOfBirth}"></td>

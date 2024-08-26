@@ -2,6 +2,8 @@ package com.medilabo.microserviceclientui.controller;
 
 import com.medilabo.microserviceclientui.dto.NoteDTO;
 import com.medilabo.microserviceclientui.dto.PatientDTO;
+import com.medilabo.microserviceclientui.dto.RiskLevelDTO;
+import com.medilabo.microserviceclientui.proxy.MicroserviceAssessmentProxy;
 import com.medilabo.microserviceclientui.proxy.MicroserviceNoteProxy;
 import com.medilabo.microserviceclientui.proxy.MicroservicePatientProxy;
 import jakarta.validation.Valid;
@@ -23,12 +25,16 @@ public class NoteViewController {
 
     private final MicroservicePatientProxy microservicePatientProxy;
     private final MicroserviceNoteProxy microserviceNoteProxy;
+    private final MicroserviceAssessmentProxy microserviceAssessmentProxy;
 
 
     @GetMapping("/note/list/{patientId}")
     public String noteList(@PathVariable Long patientId, Model model) {
         PatientDTO patientDTO = microservicePatientProxy.getPatient(patientId);
         List<NoteDTO> noteDTOS = microserviceNoteProxy.getNotes(patientId);
+        RiskLevelDTO riskLevelDTO = microserviceAssessmentProxy.getAssessment(patientId);
+
+        model.addAttribute("riskLevel", riskLevelDTO);
         model.addAttribute("notes", noteDTOS);
         model.addAttribute("patientFirstName", patientDTO.getFirstName());
         model.addAttribute("patientLastName", patientDTO.getLastName());
@@ -94,4 +100,12 @@ public class NoteViewController {
 
         return "redirect:/note/list/" + noteDTO.getPatientId();
     }
+
+//    @GetMapping("/assessment/{patientId}")
+//    public String getAssessment(@PathVariable Long patientId, Model model) {
+//        RiskLevelDTO riskLevelDTO = microserviceAssessmentProxy.getAssessment(patientId);
+//        model.addAttribute("riskLevel", riskLevelDTO);
+//
+//        return model.toString();
+//    }
 }
