@@ -24,7 +24,7 @@ public class AssessmentController {
     @GetMapping("/assessment/{patientId}")
     public ResponseEntity<RiskLevel> getAssessment(@PathVariable Long patientId) {
         PatientDTO patientDTO = microservicePatientProxy.getPatient(patientId);
-        int riskTermsInPatientNotes = microserviceNoteProxy.countRiskTerms(patientId);
+        Integer riskTermsInPatientNotes = microserviceNoteProxy.countRiskTerms(patientId);
 
         RiskLevel assessment = assessmentService.getAssessment(patientDTO, riskTermsInPatientNotes);
 

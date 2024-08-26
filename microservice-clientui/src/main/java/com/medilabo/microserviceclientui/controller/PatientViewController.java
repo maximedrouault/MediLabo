@@ -32,6 +32,7 @@ public class PatientViewController {
 
     @GetMapping("/patient/delete/{id}")
     public String deletePatient(@PathVariable Long id) {
+
         microservicePatientProxy.deletePatient(id);
 
         return "redirect:/patient/list";

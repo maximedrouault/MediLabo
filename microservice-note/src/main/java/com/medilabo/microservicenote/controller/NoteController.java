@@ -84,7 +84,7 @@ public class NoteController {
 
     @GetMapping("/countRiskTerms/{patientId}")
     public ResponseEntity<Integer> countRiskTerms(@PathVariable Long patientId) {
-        Integer riskTermsFound = noteRepository.countRiskTerms(patientId, riskTerms);
+        Integer riskTermsFound = noteRepository.countRiskTerms(patientId, riskTerms).orElse(0);
 
         return new ResponseEntity<>(riskTermsFound, HttpStatus.OK);
     }

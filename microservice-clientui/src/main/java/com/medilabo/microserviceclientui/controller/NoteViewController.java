@@ -100,12 +100,4 @@ public class NoteViewController {
 
         return "redirect:/note/list/" + noteDTO.getPatientId();
     }
-
-//    @GetMapping("/assessment/{patientId}")
-//    public String getAssessment(@PathVariable Long patientId, Model model) {
-//        RiskLevelDTO riskLevelDTO = microserviceAssessmentProxy.getAssessment(patientId);
-//        model.addAttribute("riskLevel", riskLevelDTO);
-//
-//        return model.toString();
-//    }
 }
