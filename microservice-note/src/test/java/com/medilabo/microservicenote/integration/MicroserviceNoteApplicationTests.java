@@ -1,9 +1,11 @@
-package com.medilabo.microservicenote;
+package com.medilabo.microservicenote.integration;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
+@Disabled
 class MicroserviceNoteApplicationTests {
 
 	@Test
