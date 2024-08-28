@@ -131,6 +131,7 @@ services:
       - "9100:9100"
     environment:
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
+      TZ: Europe/Paris
     deploy:
       replicas: 1
     depends_on:

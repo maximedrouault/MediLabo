@@ -9,8 +9,7 @@ public enum RiskLevelDTO {
     NONE("None"),
     BORDERLINE("Borderline"),
     IN_DANGER("In danger"),
-    EARLY_ONSET("Early onset"),
-    UNKNOWN_RISK_LEVEL("Unknown risk level");
+    EARLY_ONSET("Early onset");
 
     private final String level;
 }

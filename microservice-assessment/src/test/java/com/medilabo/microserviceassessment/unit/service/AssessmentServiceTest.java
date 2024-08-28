@@ -27,7 +27,7 @@ class AssessmentServiceTest {
     @ValueSource(ints = {2, 3, 4, 5})
     void getAssessmentReturnsBorderlineWhenRiskTermsBetween2And5AndAgeAboveThreshold(int riskTermsFound) {
         PatientDTO patient = PatientDTO.builder()
-                .dateOfBirth(LocalDate.of(1980, 1, 1))
+                .dateOfBirth(LocalDate.of(LocalDate.now().minusYears(40).getYear(), 1, 1))
                 .gender(PatientDTO.Gender.M).build();
 
         RiskLevel result = assessmentService.getAssessment(patient, riskTermsFound);
@@ -51,7 +51,7 @@ class AssessmentServiceTest {
     @Test
     void getAssessmentReturnsInDangerWhenMaleAgeBelowThresholdAndRiskTerms3() {
         PatientDTO patient = PatientDTO.builder()
-                .dateOfBirth(LocalDate.of(2000, 1, 1))
+                .dateOfBirth(LocalDate.of(LocalDate.now().minusYears(20).getYear(), 1, 1))
                 .gender(PatientDTO.Gender.M).build();
 
         RiskLevel result = assessmentService.getAssessment(patient, 3);
@@ -62,7 +62,7 @@ class AssessmentServiceTest {
     @Test
     void getAssessmentReturnsInDangerWhenFemaleAgeBelowThresholdAndRiskTerms4() {
         PatientDTO patient = PatientDTO.builder()
-                .dateOfBirth(LocalDate.of(2000, 1, 1))
+                .dateOfBirth(LocalDate.of(LocalDate.now().minusYears(20).getYear(), 1, 1))
                 .gender(PatientDTO.Gender.F).build();
 
         RiskLevel result = assessmentService.getAssessment(patient, 4);
@@ -74,7 +74,7 @@ class AssessmentServiceTest {
     @ValueSource(ints = {6, 7})
     void getAssessmentReturnsInDangerWhenAgeAboveThresholdAndRiskTerms6Or7(int riskTermsFound) {
         PatientDTO patient = PatientDTO.builder()
-                .dateOfBirth(LocalDate.of(1980, 1, 1))
+                .dateOfBirth(LocalDate.of(LocalDate.now().minusYears(40).getYear(), 1, 1))
                 .gender(PatientDTO.Gender.M).build();
 
         RiskLevel result = assessmentService.getAssessment(patient, riskTermsFound);
@@ -99,7 +99,7 @@ class AssessmentServiceTest {
     @ValueSource(ints = {5, 6, 7, 8, 9})
     void getAssessmentReturnsEarlyOnsetWhenMaleAgeBelowThresholdAndRiskTerms5OrMore(int riskTermsFound) {
         PatientDTO patient = PatientDTO.builder()
-                .dateOfBirth(LocalDate.of(2000, 1, 1))
+                .dateOfBirth(LocalDate.of(LocalDate.now().minusYears(20).getYear(), 1, 1))
                 .gender(PatientDTO.Gender.M).build();
 
         RiskLevel result = assessmentService.getAssessment(patient, riskTermsFound);
@@ -111,7 +111,7 @@ class AssessmentServiceTest {
     @ValueSource(ints = {7, 8, 9})
     void getAssessmentReturnsEarlyOnsetWhenFemaleAgeBelowThresholdAndRiskTerms7OrMore(int riskTermsFound) {
         PatientDTO patient = PatientDTO.builder()
-                .dateOfBirth(LocalDate.of(2000, 1, 1))
+                .dateOfBirth(LocalDate.of(LocalDate.now().minusYears(20).getYear(), 1, 1))
                 .gender(PatientDTO.Gender.F).build();
 
         RiskLevel result = assessmentService.getAssessment(patient, riskTermsFound);
@@ -123,7 +123,7 @@ class AssessmentServiceTest {
     @ValueSource(ints = {8, 9})
     void getAssessmentReturnsEarlyOnsetWhenAgeAboveThresholdAndRiskTerms8OrMore(int riskTermsFound) {
         PatientDTO patient = PatientDTO.builder()
-                .dateOfBirth(LocalDate.of(1980, 1, 1))
+                .dateOfBirth(LocalDate.of(LocalDate.now().minusYears(40).getYear(), 1, 1))
                 .gender(PatientDTO.Gender.M).build();
 
         RiskLevel result = assessmentService.getAssessment(patient, riskTermsFound);
@@ -135,7 +135,7 @@ class AssessmentServiceTest {
     @Test
     void getAssessmentReturnsNoneWhenNoConditionsMet() {
         PatientDTO patient = PatientDTO.builder()
-                .dateOfBirth(LocalDate.of(2000, 1, 1))
+                .dateOfBirth(LocalDate.of(LocalDate.now().minusYears(20).getYear(), 1, 1))
                 .gender(PatientDTO.Gender.M).build();
 
         RiskLevel result = assessmentService.getAssessment(patient, 1);
@@ -146,7 +146,7 @@ class AssessmentServiceTest {
     @Test
     void getAssessmentReturnsNoneWhenRiskTermsNegative() {
         PatientDTO patient = PatientDTO.builder()
-                .dateOfBirth(LocalDate.of(2000, 1, 1))
+                .dateOfBirth(LocalDate.of(LocalDate.now().minusYears(20).getYear(), 1, 1))
                 .gender(PatientDTO.Gender.M).build();
 
         RiskLevel result = assessmentService.getAssessment(patient, -1);
@@ -157,7 +157,7 @@ class AssessmentServiceTest {
     @Test
     void getAssessmentReturnsNoneWhenRiskTermsZero() {
         PatientDTO patient = PatientDTO.builder()
-                .dateOfBirth(LocalDate.of(1995, 1, 1))
+                .dateOfBirth(LocalDate.of(LocalDate.now().minusYears(20).getYear(), 1, 1))
                 .gender(PatientDTO.Gender.F).build();
 
         RiskLevel result = assessmentService.getAssessment(patient, 0);
