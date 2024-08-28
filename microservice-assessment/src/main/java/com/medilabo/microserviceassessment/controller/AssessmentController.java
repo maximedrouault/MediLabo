@@ -5,6 +5,7 @@ import com.medilabo.microserviceassessment.model.RiskLevel;
 import com.medilabo.microserviceassessment.proxy.MicroserviceNoteProxy;
 import com.medilabo.microserviceassessment.proxy.MicroservicePatientProxy;
 import com.medilabo.microserviceassessment.service.AssessmentService;
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,8 +24,16 @@ public class AssessmentController {
 
     @GetMapping("/assessment/{patientId}")
     public ResponseEntity<RiskLevel> getAssessment(@PathVariable Long patientId) {
-        PatientDTO patientDTO = microservicePatientProxy.getPatient(patientId);
-        Integer riskTermsInPatientNotes = microserviceNoteProxy.countRiskTerms(patientId);
+        PatientDTO patientDTO;
+        Integer riskTermsInPatientNotes;
+
+        try {
+            patientDTO = microservicePatientProxy.getPatient(patientId);
+            riskTermsInPatientNotes = microserviceNoteProxy.countRiskTerms(patientId);
+
+        } catch (FeignException.NotFound e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
 
         RiskLevel assessment = assessmentService.getAssessment(patientDTO, riskTermsInPatientNotes);
 

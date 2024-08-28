@@ -1,4 +1,4 @@
-package com.medilabo.microserviceassessment;
+package com.medilabo.microserviceassessment.integration;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

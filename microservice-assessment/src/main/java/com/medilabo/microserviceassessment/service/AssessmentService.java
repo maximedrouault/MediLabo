@@ -16,36 +16,34 @@ public class AssessmentService {
 
     private static final int AGE_THRESHOLD = 30;
 
-    public RiskLevel getAssessment(PatientDTO patientDTO, Integer riskTermsInPatientNotes) {
-        int patientDTOAge = Period.between(patientDTO.getDateOfBirth(), LocalDate.now()).getYears();
-        PatientDTO.Gender patientDTOGender = patientDTO.getGender();
+    public RiskLevel getAssessment(PatientDTO patient, Integer riskTermsFound) {
+        int patientAge = Period.between(patient.getDateOfBirth(), LocalDate.now()).getYears();
+        boolean isMale = patient.getGender() == PatientDTO.Gender.M;
+        boolean isFemale = patient.getGender() == PatientDTO.Gender.F;
 
-        // Risk level : None
-        if (riskTermsInPatientNotes < 2) {
-            return RiskLevel.NONE;
-        }
 
         // Risk level : Borderline
-        if (riskTermsInPatientNotes <= 5 && patientDTOAge >= AGE_THRESHOLD) {
+        if (riskTermsFound >=2 && riskTermsFound <= 5 && patientAge >= AGE_THRESHOLD) {
             return RiskLevel.BORDERLINE;
         }
 
         // Risk level : In Danger
-        if (patientDTOGender == PatientDTO.Gender.M && patientDTOAge < AGE_THRESHOLD && riskTermsInPatientNotes == 3 ||
-            patientDTOGender == PatientDTO.Gender.F && patientDTOAge < AGE_THRESHOLD && riskTermsInPatientNotes == 4 ||
-            patientDTOAge >= AGE_THRESHOLD && riskTermsInPatientNotes <= 7) {
+        if ((isMale && patientAge < AGE_THRESHOLD && riskTermsFound == 3) ||
+            (isFemale && patientAge < AGE_THRESHOLD && riskTermsFound == 4) ||
+            (patientAge >= AGE_THRESHOLD && (riskTermsFound == 6 || riskTermsFound == 7))) {
 
             return RiskLevel.IN_DANGER;
         }
 
         // Risk level : Early onset
-        if (patientDTOGender == PatientDTO.Gender.M && patientDTOAge < AGE_THRESHOLD && riskTermsInPatientNotes >= 5 ||
-            patientDTOGender == PatientDTO.Gender.F && patientDTOAge < AGE_THRESHOLD && riskTermsInPatientNotes >= 7 ||
-            patientDTOAge >= AGE_THRESHOLD) {
+        if (isMale && patientAge < AGE_THRESHOLD && riskTermsFound >= 5 ||
+            isFemale && patientAge < AGE_THRESHOLD && riskTermsFound >= 7 ||
+            patientAge >= AGE_THRESHOLD && riskTermsFound >= 8) {
 
             return RiskLevel.EARLY_ONSET;
         }
 
-        return RiskLevel.UNKNOWN_RISK_LEVEL;
+        // Risk level : None
+        return RiskLevel.NONE;
     }
 }
