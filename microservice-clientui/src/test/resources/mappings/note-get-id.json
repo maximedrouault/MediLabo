@@ -1,0 +1,28 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathTemplate": "/MICROSERVICE-NOTE/note/{id}",
+    "basicAuthCredentials": {
+      "username": "note_user_test",
+      "password": "note_password_test"
+    },
+    "pathParameters": {
+      "id": {
+        "matches": "66d583a8402cc16f3d5e739c"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+        "id": "66d583a8402cc16f3d5e739c",
+        "patientId": 1,
+        "creationDateTime": "2021-02-01T08:13:12",
+        "patientName": "John",
+        "noteContent": "This is a test note"
+    }
+  }
+}

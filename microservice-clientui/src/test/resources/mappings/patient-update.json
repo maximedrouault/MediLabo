@@ -1,7 +1,7 @@
 {
   "request": {
-    "urlPathTemplate": "/MICROSERVICE-PATIENT/patient/update",
     "method": "PUT",
+    "urlPathTemplate": "/MICROSERVICE-PATIENT/patient/update",
     "basicAuthCredentials": {
         "username": "patient_user_test",
         "password": "patient_password_test"

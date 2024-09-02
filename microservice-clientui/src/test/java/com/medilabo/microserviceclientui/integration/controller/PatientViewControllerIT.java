@@ -77,7 +77,7 @@ public class PatientViewControllerIT {
     }
 
     @Test
-    void patientListReturnsRedirectToLoginPageWhenNotAuthenticated() {
+    void patientListRedirectsToLoginPageWhenNotAuthenticated() {
         ResponseEntity<String> patientListResponse = restTemplate.getForEntity(
                 "http://localhost:" + port + "/patient/list", String.class);
 
@@ -206,6 +206,8 @@ public class PatientViewControllerIT {
         assertTrue(responseBody.contains("gender"));
         assertTrue(responseBody.contains("Address"));
         assertTrue(responseBody.contains("Telephone number"));
+        assertTrue(responseBody.contains("must not be blank"));
+        assertTrue(responseBody.contains("must not be null"));
     }
 
 
@@ -288,5 +290,7 @@ public class PatientViewControllerIT {
         assertTrue(responseBody.contains("gender"));
         assertTrue(responseBody.contains("Address"));
         assertTrue(responseBody.contains("Telephone number"));
+        assertTrue(responseBody.contains("must not be blank"));
+        assertTrue(responseBody.contains("must not be null"));
     }
 }

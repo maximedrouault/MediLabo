@@ -22,6 +22,10 @@ spring:
       password: '$2a$12$rLQWP2Ba7q1N80Bia.Vdf.K05hXHOMzSWEbtGPLvsRn2wXJ3WZAti'
       roles: USER
 
+  # Language configuration
+  web:
+    locale: en
+
 # Disable Eureka for tests
 eureka:
   client:

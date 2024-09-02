@@ -1,14 +1,14 @@
 {
   "request": {
     "method": "DELETE",
-    "urlPathTemplate": "/MICROSERVICE-NOTE/note/deleteAll/{patientId}",
+    "urlPathTemplate": "/MICROSERVICE-NOTE/note/delete/{id}",
     "basicAuthCredentials": {
       "username": "note_user_test",
       "password": "note_password_test"
     },
     "pathParameters": {
-      "patientId": {
-        "matches": "[0-9]+"
+      "id": {
+        "matches": "66d583a8402cc16f3d5e739c"
       }
     }
   },

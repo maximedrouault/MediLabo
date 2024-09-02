@@ -1,0 +1,22 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathTemplate": "/MICROSERVICE-ASSESSMENT/assessment/{patientId}",
+    "basicAuthCredentials": {
+      "username": "assessment_user_test",
+      "password": "assessment_password_test"
+    },
+    "pathParameters": {
+      "patientId": {
+        "matches": "[0-9]+"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+        "Content-Type": "application/json"
+    },
+    "body": "\"NONE\""
+  }
+}

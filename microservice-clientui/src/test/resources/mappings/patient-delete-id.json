@@ -1,17 +1,17 @@
 {
   "request": {
-    "urlPathTemplate": "/MICROSERVICE-PATIENT/patient/delete/{id}",
     "method": "DELETE",
-    "pathParameters": {
-      "id": {
-        "matches": "[0-9]+"
-      }
-    },
+    "urlPathTemplate": "/MICROSERVICE-PATIENT/patient/delete/{id}",
     "basicAuthCredentials": {
-      "username": "patient_user_test",
-      "password": "patient_password_test"
-    }
+    "username": "patient_user_test",
+    "password": "patient_password_test"
   },
+  "pathParameters": {
+    "id": {
+        "matches": "[0-9]+"
+    }
+  }
+},
   "response": {
     "status": 200
   }
