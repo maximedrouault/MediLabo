@@ -1,0 +1,30 @@
+{
+  "request": {
+    "urlPathTemplate": "/MICROSERVICE-PATIENT/patient/{id}",
+    "method": "GET",
+    "basicAuthCredentials": {
+      "username": "patient_user_test",
+      "password": "patient_password_test"
+    },
+    "pathParameters": {
+      "id": {
+        "matches": "1"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "id": 1,
+      "firstName": "John",
+      "lastName": "Doe",
+      "dateOfBirth": "1980-01-01",
+      "gender": "M",
+      "address": "123 Main St.",
+      "telephoneNumber": "123-456-7890"
+    }
+  }
+}

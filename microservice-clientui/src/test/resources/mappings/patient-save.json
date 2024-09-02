@@ -1,0 +1,25 @@
+{
+  "request": {
+    "urlPathTemplate": "/MICROSERVICE-PATIENT/patient/add",
+    "method": "POST",
+    "basicAuthCredentials": {
+        "username": "patient_user_test",
+        "password": "patient_password_test"
+    }
+  },
+  "response": {
+    "status": 201,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "id": 2,
+      "firstName": "Jane",
+      "lastName": "Doe",
+      "dateOfBirth": "1980-01-01",
+      "gender": "F",
+      "address": "123 Main St",
+      "telephoneNumber": "123-456-7890"
+    }
+  }
+}

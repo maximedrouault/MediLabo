@@ -1,0 +1,41 @@
+spring:
+  application:
+    name: client-ui-test
+
+  # Disable Spring Cloud Config for tests
+  cloud:
+    config:
+      enabled: false
+
+    # Eureka configuration
+    discovery:
+      client:
+        simple:
+          instances:
+            GATEWAY-SERVER:
+              - uri: http://localhost:9999
+
+  # Spring Security configuration
+  security:
+    user:
+      name: clientui_user_test
+      password: '$2a$12$rLQWP2Ba7q1N80Bia.Vdf.K05hXHOMzSWEbtGPLvsRn2wXJ3WZAti'
+      roles: USER
+
+# Disable Eureka for tests
+eureka:
+  client:
+    enabled: false  # Disable Eureka for tests
+
+# Feign client configuration
+feign:
+  client:
+    assessment:
+      username: assessment_user_test
+      password: assessment_password_test
+    note:
+      username: note_user_test
+      password: note_password_test
+    patient:
+      username: patient_user_test
+      password: patient_password_test
