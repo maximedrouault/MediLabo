@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: microservice-note-test
+
+  # Disable Spring Cloud Config for tests
+  cloud:
+    config:
+      enabled: false
+
+# Disable Eureka for tests
+eureka:
+  client:
+    enabled: false
+
+# Property to configure the risk terms for assessment
+riskTerms: "Hémoglobine A1C|Microalbumine|Taille|Poids|Fumeur|Fumeuse|Anormal|Cholestérol|Vertige|Rechute|Réaction|Anticorps"

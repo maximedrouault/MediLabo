@@ -88,6 +88,11 @@
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -133,7 +138,6 @@
                 <version>3.4.0</version>
                 <configuration>
                     <excludes>
-                        <exclude>**/MicroservicePatientApplicationTests.java</exclude>
                         <exclude>**/*IT.java</exclude>
                     </excludes>
                     <includes>

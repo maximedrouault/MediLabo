@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: gateway-server-test
+
+  # Disable Spring Cloud Config for tests
+  cloud:
+    config:
+      enabled: false
+
+    # Gateway configuration for tests
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+
+    # Eureka configuration
+    discovery:
+      client:
+        simple:
+          instances:
+            MICROSERVICE-PATIENT:
+              - uri: http://localhost:9999
+
+# Disable Eureka for tests
+eureka:
+  client:
+    enabled: false
+
+# Property to configure the health check endpoint
+healthcheck:
+  endpoint: "/actuator/health"

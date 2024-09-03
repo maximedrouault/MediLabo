@@ -1,12 +1,12 @@
-package com.medilabo.microservicepatient.integration;
+package com.medilabo.gatewayserver.integration;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
-@Disabled
-class MicroservicePatientApplicationTests {
+@ActiveProfiles("test")
+class GatewayServerApplicationIT {
 
     @Test
     void contextLoads() {

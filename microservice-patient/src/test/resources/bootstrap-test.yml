@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: microservice-patient-test
+
+  # Disable DataSource for tests
+  sql:
+    init:
+      mode: never
+  jpa:
+    hibernate:
+      ddl-auto: none
+
+  # Disable Spring Cloud Config for tests
+  cloud:
+    config:
+      enabled: false
+
+# Disable Eureka for tests
+eureka:
+  client:
+    enabled: false

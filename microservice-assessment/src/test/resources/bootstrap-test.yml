@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: microservice-assessment-test
+
+  # Disable Spring Cloud Config for tests
+  cloud:
+    config:
+      enabled: false
+
+# Disable Eureka for tests
+eureka:
+  client:
+    enabled: false
+
+# Feign client configuration
+feign:
+  client:
+    note:
+      username: note_user_test
+      password: note_password_test
+    patient:
+      username: patient_user_test
+      password: patient_password_test

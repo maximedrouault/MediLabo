@@ -1,0 +1,27 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/patient/list",
+    "basicAuthCredentials": {
+      "username": "patient_user_test",
+      "password": "patient_password_test"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": [
+      {
+        "id": 1,
+        "firstName": "John",
+        "lastName": "Doe",
+        "dateOfBirth": "1980-01-01",
+        "gender": "M",
+        "address": "123 Main St.",
+        "telephoneNumber": "123-456-7890"
+      }
+    ]
+  }
+}

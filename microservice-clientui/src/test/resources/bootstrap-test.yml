@@ -29,7 +29,7 @@ spring:
 # Disable Eureka for tests
 eureka:
   client:
-    enabled: false  # Disable Eureka for tests
+    enabled: false
 
 # Feign client configuration
 feign:
