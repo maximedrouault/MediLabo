@@ -30,7 +30,7 @@
                     <div class="mb-3">
                         <h2 class="fs-3" th:text="'Note from : ' + ${note.creationDateTime.toLocalDate()} + ' at ' + ${note.creationDateTime.toLocalTime().withSecond(0)}"></h2>
                         <label for="noteContent" class="form-label">Note content :</label>
-                        <textarea type="text" class="form-control" rows="15" th:text="${note.noteContent}" id="noteContent" name="noteContent" readonly></textarea>
+                        <textarea type="text" class="form-control" rows="15" th:text="${note.noteContent}" id="noteContent" name="noteContent" readonly disabled></textarea>
                     </div>
                 </div>
             </div>

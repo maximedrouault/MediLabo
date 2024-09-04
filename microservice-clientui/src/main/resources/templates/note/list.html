@@ -69,7 +69,7 @@
                             <td th:text="${note.patientName}"></td>
                             <td class="col-6">
                                 <label for="noteContent" class="visually-hidden"></label>
-                                <textarea type="text" rows="3" th:text="${note.noteContent}" class="w-100 form-control" id="noteContent" name="noteContent" readonly></textarea>
+                                <textarea type="text" rows="3" th:text="${note.noteContent}" class="w-100 form-control" id="noteContent" name="noteContent" readonly disabled></textarea>
                             </td>
                             <td class="fs-3">
                                 <a th:href="@{|/note/${note.id}|}" class="text-decoration-none me-3" title="View note">
