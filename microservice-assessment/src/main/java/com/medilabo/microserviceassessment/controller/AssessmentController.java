@@ -6,6 +6,9 @@ import com.medilabo.microserviceassessment.proxy.MicroserviceNoteProxy;
 import com.medilabo.microserviceassessment.proxy.MicroservicePatientProxy;
 import com.medilabo.microserviceassessment.service.AssessmentService;
 import feign.FeignException;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +26,15 @@ public class AssessmentController {
 
 
     @GetMapping("/assessment/{patientId}")
+    @Operation(summary = "Get the risk level of a patient",
+            description = "Get the risk level of a patient based on the number of risk terms found in the patient notes",
+            parameters = {
+            @Parameter(name = "patientId", description = "ID of the patient whose risk level is to be assessed",
+                    required = true, example = "1"),
+    }, responses = {
+            @ApiResponse(responseCode = "200", description = "Risk level assessed"),
+            @ApiResponse(responseCode = "404", description = "Patient not found")
+    })
     public ResponseEntity<RiskLevel> getAssessment(@PathVariable Long patientId) {
         PatientDTO patientDTO;
         Integer riskTermsInPatientNotes;

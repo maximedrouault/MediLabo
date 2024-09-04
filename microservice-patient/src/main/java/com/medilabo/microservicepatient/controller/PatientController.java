@@ -2,6 +2,9 @@ package com.medilabo.microservicepatient.controller;
 
 import com.medilabo.microservicepatient.model.Patient;
 import com.medilabo.microservicepatient.repository.PatientRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -20,6 +23,7 @@ public class PatientController {
 
 
     @GetMapping("/list")
+    @Operation(summary = "Get all patients")
     public ResponseEntity<List<Patient>> getAllPatients() {
         List<Patient> patients = patientRepository.findAll(Sort.by(Sort.Direction.ASC, "lastName"));
 
@@ -27,6 +31,12 @@ public class PatientController {
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Get a patient by id", parameters = {
+            @Parameter(name = "id", description = "ID of the patient to be retrieved", required = true, example = "1"),
+    }, responses = {
+            @ApiResponse(responseCode = "200", description = "Patient found"),
+            @ApiResponse(responseCode = "404", description = "Patient not found")
+    })
     public ResponseEntity<Patient> getPatient(@PathVariable Long id) {
         Optional<Patient> patientOptional = patientRepository.findById(id);
 
@@ -36,6 +46,12 @@ public class PatientController {
     }
 
     @PostMapping("/add")
+    @Operation(summary = "Add a patient",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+            description = "Patient details to be added", required = true),
+            responses = {
+            @ApiResponse(responseCode = "201", description = "Patient added")
+    })
     public ResponseEntity<Patient> addPatient(@RequestBody Patient patient) {
         Patient patientCreated = patientRepository.save(patient);
 
@@ -43,6 +59,13 @@ public class PatientController {
     }
 
     @PutMapping("/update")
+    @Operation(summary = "Update a patient",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Patient details to be updated", required = true),
+            responses = {
+            @ApiResponse(responseCode = "200", description = "Patient updated"),
+            @ApiResponse(responseCode = "404", description = "Patient not found")
+    })
     public ResponseEntity<Patient> updatePatient(@RequestBody Patient patientDetails) {
         Optional<Patient> patientOptional = patientRepository.findById(patientDetails.getId());
 
@@ -65,6 +88,12 @@ public class PatientController {
     }
 
     @DeleteMapping("/delete/{id}")
+    @Operation(summary = "Delete a patient", parameters = {
+            @Parameter(name = "id", description = "ID of the patient to be deleted", required = true, example = "1"),
+    }, responses = {
+            @ApiResponse(responseCode = "200", description = "Patient deleted"),
+            @ApiResponse(responseCode = "404", description = "Patient not found")
+    })
     public ResponseEntity<Void> deletePatient(@PathVariable Long id) {
         Optional<Patient> patientOptional = patientRepository.findById(id);
 
