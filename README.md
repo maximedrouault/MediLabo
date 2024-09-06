@@ -25,6 +25,8 @@ MediLabo uses a microservices architecture:
 - Multiple instances of each backend microservice (patient, note, and assessment) can be run for scalability and fault tolerance.
 - Centralized configuration is provided by a Spring Cloud Config server.
 
+![MediLabo Architecture](MediLabo_Architecture.png)
+
 ## Components
 
 MediLabo consists of the following microservices:
