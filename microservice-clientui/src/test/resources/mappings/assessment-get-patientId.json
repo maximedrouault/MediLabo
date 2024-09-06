@@ -8,7 +8,7 @@
     },
     "pathParameters": {
       "patientId": {
-        "matches": "[0-9]+"
+        "matches": "1"
       }
     }
   },

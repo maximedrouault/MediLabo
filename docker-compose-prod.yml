@@ -81,7 +81,7 @@ services:
       dockerfile: Dockerfile
     restart: always
     ports:
-      - "9000:9000"
+      - "0:9000"
     environment:
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
     deploy:
@@ -128,7 +128,7 @@ services:
       dockerfile: Dockerfile
     restart: always
     ports:
-      - "9100:9100"
+      - "0:9100"
     environment:
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
       TZ: Europe/Paris
@@ -156,7 +156,7 @@ services:
       dockerfile: Dockerfile
     restart: always
     ports:
-      - "9200:9200"
+      - "0:9200"
     environment:
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
     deploy:

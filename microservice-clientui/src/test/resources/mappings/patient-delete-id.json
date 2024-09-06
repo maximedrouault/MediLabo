@@ -8,7 +8,7 @@
   },
   "pathParameters": {
     "id": {
-        "matches": "[0-9]+"
+        "matches": "1"
     }
   }
 },

@@ -1,7 +1,13 @@
+# Server configuration
+server:
+  port: 8000
+
+# Spring application configuration
 spring:
   application:
     name: config-server
 
+  # Spring Cloud Config Server repository configuration
   cloud:
     config:
       server:
@@ -9,12 +15,11 @@ spring:
           uri: https://github.com/maximedrouault/medilabo-config-server-repo.git
           clone-on-start: true
 
-server:
-  port: 8000
-
+# Spring cloud config server configuration
 encrypt:
   key: ${ENCRYPT_KEY}
 
+# Actuator configuration
 management:
   endpoints:
     web:
