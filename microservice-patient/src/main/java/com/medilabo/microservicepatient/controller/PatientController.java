@@ -4,7 +4,10 @@ import com.medilabo.microservicepatient.model.Patient;
 import com.medilabo.microservicepatient.repository.PatientRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -17,13 +20,22 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/patient")
+@SecurityScheme(
+        name = "basicAuth",
+        type = SecuritySchemeType.HTTP,
+        scheme = "basic"
+)
+@SecurityRequirement(name = "basicAuth")
 public class PatientController {
 
     private final PatientRepository patientRepository;
 
 
     @GetMapping("/list")
-    @Operation(summary = "Get all patients")
+    @Operation(summary = "Get all patients", responses = {
+            @ApiResponse(responseCode = "200", description = "Patients found"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized")
+    })
     public ResponseEntity<List<Patient>> getAllPatients() {
         List<Patient> patients = patientRepository.findAll(Sort.by(Sort.Direction.ASC, "lastName"));
 
@@ -35,7 +47,8 @@ public class PatientController {
             @Parameter(name = "id", description = "ID of the patient to be retrieved", required = true, example = "1"),
     }, responses = {
             @ApiResponse(responseCode = "200", description = "Patient found"),
-            @ApiResponse(responseCode = "404", description = "Patient not found")
+            @ApiResponse(responseCode = "404", description = "Patient not found"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     public ResponseEntity<Patient> getPatient(@PathVariable Long id) {
         Optional<Patient> patientOptional = patientRepository.findById(id);
@@ -50,7 +63,8 @@ public class PatientController {
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
             description = "Patient details to be added", required = true),
             responses = {
-            @ApiResponse(responseCode = "201", description = "Patient added")
+            @ApiResponse(responseCode = "201", description = "Patient added"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     public ResponseEntity<Patient> addPatient(@RequestBody Patient patient) {
         Patient patientCreated = patientRepository.save(patient);
@@ -64,7 +78,8 @@ public class PatientController {
                     description = "Patient details to be updated", required = true),
             responses = {
             @ApiResponse(responseCode = "200", description = "Patient updated"),
-            @ApiResponse(responseCode = "404", description = "Patient not found")
+            @ApiResponse(responseCode = "404", description = "Patient not found"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     public ResponseEntity<Patient> updatePatient(@RequestBody Patient patientDetails) {
         Optional<Patient> patientOptional = patientRepository.findById(patientDetails.getId());
@@ -92,7 +107,8 @@ public class PatientController {
             @Parameter(name = "id", description = "ID of the patient to be deleted", required = true, example = "1"),
     }, responses = {
             @ApiResponse(responseCode = "200", description = "Patient deleted"),
-            @ApiResponse(responseCode = "404", description = "Patient not found")
+            @ApiResponse(responseCode = "404", description = "Patient not found"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     public ResponseEntity<Void> deletePatient(@PathVariable Long id) {
         Optional<Patient> patientOptional = patientRepository.findById(id);

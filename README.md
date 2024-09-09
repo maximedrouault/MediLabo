@@ -114,17 +114,17 @@ To install and run MediLabo locally, follow these steps:
 ### OpenAPI/Swagger Documentation
 
 - **Patient Microservice**:
-    - URL: http://localhost:9000/swagger-ui.html
+    - URL: http://localhost:9000/swagger-ui/index.html
     - **Login**: `patient_api_user_test`
     - **Password**: `patient_api_password_test`
 
 - **Note Microservice**:
-    - URL: http://localhost:9100/swagger-ui.html
+    - URL: http://localhost:9100/swagger-ui/index.html
     - **Login**: `note_api_user_test`
     - **Password**: `note_api_password_test`
 
 - **Assessment Microservice**:
-    - URL: http://localhost:9200/swagger-ui.html
+    - URL: http://localhost:9200/swagger-ui/index.html
     - **Login**: `assessment_api_user_test`
     - **Password**: `assessment_api_password_test`
 

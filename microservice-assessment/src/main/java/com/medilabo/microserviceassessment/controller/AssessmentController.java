@@ -8,7 +8,10 @@ import com.medilabo.microserviceassessment.service.AssessmentService;
 import feign.FeignException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +21,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@SecurityScheme(
+        name = "basicAuth",
+        type = SecuritySchemeType.HTTP,
+        scheme = "basic"
+)
+@SecurityRequirement(name = "basicAuth")
 public class AssessmentController {
 
     private final MicroserviceNoteProxy microserviceNoteProxy;
@@ -33,7 +42,8 @@ public class AssessmentController {
                     required = true, example = "1"),
     }, responses = {
             @ApiResponse(responseCode = "200", description = "Risk level assessed"),
-            @ApiResponse(responseCode = "404", description = "Patient not found")
+            @ApiResponse(responseCode = "404", description = "Patient not found"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     public ResponseEntity<RiskLevel> getAssessment(@PathVariable Long patientId) {
         PatientDTO patientDTO;
