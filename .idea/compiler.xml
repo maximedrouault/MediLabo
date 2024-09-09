@@ -22,6 +22,7 @@
       <module name="discovery" target="21" />
       <module name="front-server" target="21" />
       <module name="gateway" target="21" />
+      <module name="medilabo" target="1.5" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
