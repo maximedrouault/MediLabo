@@ -3,6 +3,10 @@ services:
     build:
       context: ./config-server
       dockerfile: Dockerfile
+      labels:
+        - "com.docker.compose.project=medilabo"
+        - "com.docker.compose.service=config-server"
+    image: maximedrouault/medilabo-config-server:latest
     restart: always
     ports:
       - "8000:8000"
@@ -20,6 +24,10 @@ services:
     build:
       context: ./discovery-server
       dockerfile: Dockerfile
+      labels:
+        - "com.docker.compose.project=medilabo"
+        - "com.docker.compose.service=discovery-server"
+    image: maximedrouault/medilabo-discovery-server:latest
     restart: always
     ports:
       - "8761:8761"
@@ -39,6 +47,10 @@ services:
     build:
       context: ./gateway-server
       dockerfile: Dockerfile
+      labels:
+        - "com.docker.compose.project=medilabo"
+        - "com.docker.compose.service=gateway-server"
+    image: maximedrouault/medilabo-gateway-server:latest
     restart: always
     ports:
       - "8100:8100"
@@ -79,6 +91,10 @@ services:
     build:
       context: ./microservice-patient
       dockerfile: Dockerfile
+      labels:
+        - "com.docker.compose.project=medilabo"
+        - "com.docker.compose.service=patient-api"
+    image: maximedrouault/medilabo-patient-api:latest
     restart: always
     ports:
       - "0:9000"
@@ -126,6 +142,10 @@ services:
     build:
       context: ./microservice-note
       dockerfile: Dockerfile
+      labels:
+        - "com.docker.compose.project=medilabo"
+        - "com.docker.compose.service=note-api"
+    image: maximedrouault/medilabo-note-api:latest
     restart: always
     ports:
       - "0:9100"
@@ -154,6 +174,10 @@ services:
     build:
       context: ./microservice-assessment
       dockerfile: Dockerfile
+      labels:
+        - "com.docker.compose.project=medilabo"
+        - "com.docker.compose.service=assessment-api"
+    image: maximedrouault/medilabo-assessment-api:latest
     restart: always
     ports:
       - "0:9200"
@@ -187,6 +211,10 @@ services:
     build:
       context: ./microservice-clientui
       dockerfile: Dockerfile
+      labels:
+        - "com.docker.compose.project=medilabo"
+        - "com.docker.compose.service=client-ui"
+    image: maximedrouault/medilabo-client-ui:latest
     restart: always
     ports:
       - "8080:8080"
