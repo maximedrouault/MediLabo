@@ -4,8 +4,13 @@
     <option name="bindingEnabled" value="true" />
     <option name="moduleMapping">
       <map>
-        <entry key="microservice-clientui" value="microservices-clientui" />
-        <entry key="microservice-patient" value="mpatient" />
+        <entry key="microservice-clientui" value="microservice-clientui" />
+        <entry key="microservice-patient" value="microservice-patient" />
+        <entry key="microservice-note" value="microservice-note" />
+        <entry key="microservice-assessment" value="microservice-assessment" />
+        <entry key="config-server" value="config-server" />
+        <entry key="discovery-server" value="discovery-server" />
+        <entry key="gateway-server" value="gateway-server" />
       </map>
     </option>
     <option name="projectKey" value="maximedrouault_MediLabo" />
