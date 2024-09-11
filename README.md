@@ -83,7 +83,7 @@ To install and run MediLabo locally, follow these steps:
 1. Launch `docker-compose` to start the MongoDB and MySQL databases:
 
     ```bash
-    docker-compose -f docker-compose-dev.yml up
+    docker-compose -f docker-compose-dev.yml up -d
     ```
 
 2. Manually start the microservices with the `DEV` profile in this order:
