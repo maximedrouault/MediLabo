@@ -1,11 +1,14 @@
 package com.medilabo.microserviceclientui.integration.controller;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
+import com.medilabo.microserviceclientui.integration.config.AuthHelper;
+import com.medilabo.microserviceclientui.integration.config.TestAuthConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.*;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -15,51 +18,24 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
+@Import(TestAuthConfig.class)
 @WireMockTest(httpPort = 9999)
-public class PatientViewControllerIT {
+class PatientViewControllerIT {
 
     @Autowired
     private TestRestTemplate restTemplate;
 
+    @Autowired
+    private AuthHelper authHelper;
+
     @LocalServerPort
     private int port;
-
-    private String authCookie;
-
-
-    private void authenticateToFront() {
-        // Step 1 : Obtain the CSRF token and session cookie from the login page
-        ResponseEntity<String> loginPageResponse = restTemplate.getForEntity(
-                "http://localhost:" + port + "/login", String.class);
-        String csrfToken = extractCsrfToken(Objects.requireNonNull(loginPageResponse.getBody()));
-        String sessionCookie = loginPageResponse.getHeaders().getFirst(HttpHeaders.SET_COOKIE);
-
-        // Step 2 : Construct the login request with auth credentials, CSRF token and session cookie in FORM_URLENCODED format
-        String formBody = "username=clientui_user_test&password=clientui_password_test&_csrf=" + csrfToken;
-        HttpHeaders loginHeaders = new HttpHeaders();
-        loginHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        loginHeaders.add(HttpHeaders.COOKIE, sessionCookie); // Add the session cookie
-        HttpEntity<String> loginRequest = new HttpEntity<>(formBody, loginHeaders);
-
-        // Send the login request and get the auth session cookie from the response
-        ResponseEntity<String> loginResponse = restTemplate.postForEntity(
-                "http://localhost:" + port + "/login", loginRequest, String.class);
-        authCookie = loginResponse.getHeaders().getFirst(HttpHeaders.SET_COOKIE);
-    }
-
-    private String extractCsrfToken(String body) {
-        // Extract CSRF token from the page body
-        String tokenPrefix = "name=\"_csrf\" value=\"";
-        int startIndex = body.indexOf(tokenPrefix) + tokenPrefix.length();
-        int endIndex = body.indexOf("\"", startIndex);
-        return body.substring(startIndex, endIndex);
-    }
 
 
     // Patient list tests
     @Test
     void patientListReturnsAllPatientsWhenAuthenticated() {
-        authenticateToFront();
+        String authCookie = authHelper.authenticateToFront(port);
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.COOKIE, authCookie);
 
@@ -90,7 +66,7 @@ public class PatientViewControllerIT {
     // Patient delete tests
     @Test
     void deletePatientRedirectsToPatientListWhenAuthenticatedAndDeleteNotesAndPatientIsOk() {
-        authenticateToFront();
+        String authCookie = authHelper.authenticateToFront(port);
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.COOKIE, authCookie);
 
@@ -126,7 +102,7 @@ public class PatientViewControllerIT {
 
     @Test
     void addPatientReturnsAddPatientFormWhenAuthenticated() {
-        authenticateToFront();
+        String authCookie = authHelper.authenticateToFront(port);
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.COOKIE, authCookie);
 
@@ -148,14 +124,14 @@ public class PatientViewControllerIT {
     // Patient save tests
     @Test
     void savePatientRedirectsToPatientListWhenAuthenticatedAndAddIsOk() {
-        authenticateToFront();
+        String authCookie = authHelper.authenticateToFront(port);
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.COOKIE, authCookie);
 
         // Obtain the CSRF token from the add patient form
         ResponseEntity<String> addPatientFormResponse = restTemplate.exchange(
                 "http://localhost:" + port + "/patient/add", HttpMethod.GET, new HttpEntity<>(headers), String.class);
-        String csrfToken = extractCsrfToken(Objects.requireNonNull(addPatientFormResponse.getBody()));
+        String csrfToken = authHelper.extractCsrfToken(Objects.requireNonNull(addPatientFormResponse.getBody()));
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         String formBody = "lastName=Doe&firstName=Jane&dateOfBirth=1980-01-01&gender=F&address=123 Main St&telephoneNumber=123-456-7890&_csrf=" + csrfToken;
 
@@ -182,14 +158,14 @@ public class PatientViewControllerIT {
 
     @Test
     void savePatientReturnsAddPatientFormWhenAuthenticatedAndFormIsInvalid() {
-        authenticateToFront();
+        String authCookie = authHelper.authenticateToFront(port);
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.COOKIE, authCookie);
 
         // Obtain the CSRF token from the add patient form
         ResponseEntity<String> addPatientFormResponse = restTemplate.exchange(
                 "http://localhost:" + port + "/patient/add", HttpMethod.GET, new HttpEntity<>(headers), String.class);
-        String csrfToken = extractCsrfToken(Objects.requireNonNull(addPatientFormResponse.getBody()));
+        String csrfToken = authHelper.extractCsrfToken(Objects.requireNonNull(addPatientFormResponse.getBody()));
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         String formBody = "lastName=&firstName=&dateOfBirth=&gender=&address=&telephoneNumber=&_csrf=" + csrfToken;
 
@@ -214,7 +190,7 @@ public class PatientViewControllerIT {
     // Patient update tests
     @Test
     void updatePatientReturnsUpdatePatientFormWhenAuthenticated() {
-        authenticateToFront();
+        String authCookie = authHelper.authenticateToFront(port);
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.COOKIE, authCookie);
 
@@ -244,14 +220,14 @@ public class PatientViewControllerIT {
 
     @Test
     void updatePatientRedirectsToPatientListWhenAuthenticatedAndUpdateIsOk() {
-        authenticateToFront();
+        String authCookie = authHelper.authenticateToFront(port);
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.COOKIE, authCookie);
 
         // Obtain the CSRF token from the update patient form
         ResponseEntity<String> updatePatientFormResponse = restTemplate.exchange(
                 "http://localhost:" + port + "/patient/update/1", HttpMethod.GET, new HttpEntity<>(headers), String.class);
-        String csrfToken = extractCsrfToken(Objects.requireNonNull(updatePatientFormResponse.getBody()));
+        String csrfToken = authHelper.extractCsrfToken(Objects.requireNonNull(updatePatientFormResponse.getBody()));
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         String formBody = "id=1&lastName=Doe&firstName=Jane&dateOfBirth=1980-01-01&gender=F&address=123 Main St&telephoneNumber=123-456-7890&_csrf=" + csrfToken;
 
@@ -266,14 +242,14 @@ public class PatientViewControllerIT {
 
     @Test
     void updatePatientReturnsUpdatePatientFormWhenAuthenticatedAndFormIsInvalid() {
-        authenticateToFront();
+        String authCookie = authHelper.authenticateToFront(port);
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.COOKIE, authCookie);
 
         // Obtain the CSRF token from the update patient form
         ResponseEntity<String> updatePatientFormResponse = restTemplate.exchange(
                 "http://localhost:" + port + "/patient/update/1", HttpMethod.GET, new HttpEntity<>(headers), String.class);
-        String csrfToken = extractCsrfToken(Objects.requireNonNull(updatePatientFormResponse.getBody()));
+        String csrfToken = authHelper.extractCsrfToken(Objects.requireNonNull(updatePatientFormResponse.getBody()));
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         String formBody = "id=1&lastName=&firstName=&dateOfBirth=&gender=&address=&telephoneNumber=&_csrf=" + csrfToken;
 

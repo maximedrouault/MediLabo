@@ -1,11 +1,14 @@
 package com.medilabo.microserviceclientui.integration.controller;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
+import com.medilabo.microserviceclientui.integration.config.AuthHelper;
+import com.medilabo.microserviceclientui.integration.config.TestAuthConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.*;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -15,51 +18,24 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
+@Import(TestAuthConfig.class)
 @WireMockTest(httpPort = 9999)
-public class NoteViewControllerIT {
+class NoteViewControllerIT {
 
     @Autowired
     private TestRestTemplate restTemplate;
 
+    @Autowired
+    private AuthHelper authHelper;
+
     @LocalServerPort
     private int port;
-
-    private String authCookie;
-
-
-    private void authenticateToFront() {
-        // Step 1 : Obtain the CSRF token and session cookie from the login page
-        ResponseEntity<String> loginPageResponse = restTemplate.getForEntity(
-                "http://localhost:" + port + "/login", String.class);
-        String csrfToken = extractCsrfToken(Objects.requireNonNull(loginPageResponse.getBody()));
-        String sessionCookie = loginPageResponse.getHeaders().getFirst(HttpHeaders.SET_COOKIE);
-
-        // Step 2 : Construct the login request with auth credentials, CSRF token and session cookie in FORM_URLENCODED format
-        String formBody = "username=clientui_user_test&password=clientui_password_test&_csrf=" + csrfToken;
-        HttpHeaders loginHeaders = new HttpHeaders();
-        loginHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        loginHeaders.add(HttpHeaders.COOKIE, sessionCookie); // Add the session cookie
-        HttpEntity<String> loginRequest = new HttpEntity<>(formBody, loginHeaders);
-
-        // Send the login request and get the auth session cookie from the response
-        ResponseEntity<String> loginResponse = restTemplate.postForEntity(
-                "http://localhost:" + port + "/login", loginRequest, String.class);
-        authCookie = loginResponse.getHeaders().getFirst(HttpHeaders.SET_COOKIE);
-    }
-
-    private String extractCsrfToken(String body) {
-        // Extract CSRF token from the page body
-        String tokenPrefix = "name=\"_csrf\" value=\"";
-        int startIndex = body.indexOf(tokenPrefix) + tokenPrefix.length();
-        int endIndex = body.indexOf("\"", startIndex);
-        return body.substring(startIndex, endIndex);
-    }
 
 
     // Note list tests
     @Test
     void noteListReturnsAllNotesWhenAuthenticated() {
-        authenticateToFront();
+        String authCookie = authHelper.authenticateToFront(port);
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.COOKIE, authCookie);
 
@@ -92,7 +68,7 @@ public class NoteViewControllerIT {
     // Note details tests
     @Test
     void noteDetailsReturnsNoteWhenAuthenticated() {
-        authenticateToFront();
+        String authCookie = authHelper.authenticateToFront(port);
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.COOKIE, authCookie);
 
@@ -132,7 +108,7 @@ public class NoteViewControllerIT {
 
     @Test
     void deleteNoteRedirectsToNoteListWhenAuthenticatedAndDeleteNoteIsOk() {
-        authenticateToFront();
+        String authCookie = authHelper.authenticateToFront(port);
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.COOKIE, authCookie);
 
@@ -148,7 +124,7 @@ public class NoteViewControllerIT {
     // Note add tests
     @Test
     void addNoteFormReturnsAddNoteFormWhenAuthenticated() {
-        authenticateToFront();
+        String authCookie = authHelper.authenticateToFront(port);
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.COOKIE, authCookie);
 
@@ -186,14 +162,14 @@ public class NoteViewControllerIT {
 
     @Test
     void saveNoteRedirectsToNoteListWhenAuthenticatedAndSaveNoteIsOk() {
-        authenticateToFront();
+        String authCookie = authHelper.authenticateToFront(port);
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.COOKIE, authCookie);
 
         // Obtain the CSRF token from the add note form
         ResponseEntity<String> addNoteFormResponse = restTemplate.exchange(
                 "http://localhost:" + port + "/note/add/1", HttpMethod.GET, new HttpEntity<>(headers), String.class);
-        String csrfToken = extractCsrfToken(Objects.requireNonNull(addNoteFormResponse.getBody()));
+        String csrfToken = authHelper.extractCsrfToken(Objects.requireNonNull(addNoteFormResponse.getBody()));
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         String formBody = "patientId=1&patientName=John&noteContent=This is a test note added&_csrf=" + csrfToken;
 
@@ -207,14 +183,14 @@ public class NoteViewControllerIT {
 
     @Test
     void saveNoteReturnsAddNoteFormWhenAuthenticatedAndFormIsInvalid() {
-        authenticateToFront();
+        String authCookie = authHelper.authenticateToFront(port);
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.COOKIE, authCookie);
 
         // Obtain the CSRF token from the add note form
         ResponseEntity<String> addNoteFormResponse = restTemplate.exchange(
                 "http://localhost:" + port + "/note/add/1", HttpMethod.GET, new HttpEntity<>(headers), String.class);
-        String csrfToken = extractCsrfToken(Objects.requireNonNull(addNoteFormResponse.getBody()));
+        String csrfToken = authHelper.extractCsrfToken(Objects.requireNonNull(addNoteFormResponse.getBody()));
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         String formBody = "patientId=1&patientName=John&noteContent=&_csrf=" + csrfToken;
 
@@ -233,7 +209,7 @@ public class NoteViewControllerIT {
     // Note update tests
     @Test
     void updateNoteFormReturnsUpdateNoteFormWhenAuthenticated() {
-        authenticateToFront();
+        String authCookie = authHelper.authenticateToFront(port);
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.COOKIE, authCookie);
 
@@ -259,14 +235,14 @@ public class NoteViewControllerIT {
 
     @Test
     void updateNoteRedirectsToNoteListWhenAuthenticatedAndUpdateNoteIsOk() {
-        authenticateToFront();
+        String authCookie = authHelper.authenticateToFront(port);
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.COOKIE, authCookie);
 
         // Obtain the CSRF token from the update note form
         ResponseEntity<String> updateNoteFormResponse = restTemplate.exchange(
                 "http://localhost:" + port + "/note/update/66d583a8402cc16f3d5e739c", HttpMethod.GET, new HttpEntity<>(headers), String.class);
-        String csrfToken = extractCsrfToken(Objects.requireNonNull(updateNoteFormResponse.getBody()));
+        String csrfToken = authHelper.extractCsrfToken(Objects.requireNonNull(updateNoteFormResponse.getBody()));
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         String formBody = "id=66d583a8402cc16f3d5e739c&patientId=1&patientName=John&noteContent=This is a test note updated&_csrf=" + csrfToken;
 
@@ -280,14 +256,14 @@ public class NoteViewControllerIT {
 
     @Test
     void updateNoteReturnsUpdateNoteFormWhenAuthenticatedAndFormIsInvalid() {
-        authenticateToFront();
+        String authCookie = authHelper.authenticateToFront(port);
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.COOKIE, authCookie);
 
         // Obtain the CSRF token from the update note form
         ResponseEntity<String> updateNoteFormResponse = restTemplate.exchange(
                 "http://localhost:" + port + "/note/update/66d583a8402cc16f3d5e739c", HttpMethod.GET, new HttpEntity<>(headers), String.class);
-        String csrfToken = extractCsrfToken(Objects.requireNonNull(updateNoteFormResponse.getBody()));
+        String csrfToken = authHelper.extractCsrfToken(Objects.requireNonNull(updateNoteFormResponse.getBody()));
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         String formBody = "id=66d583a8402cc16f3d5e739c&patientId=1&patientName=John&noteContent=&_csrf=" + csrfToken;
 
