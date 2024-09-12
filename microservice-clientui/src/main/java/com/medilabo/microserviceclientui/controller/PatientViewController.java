@@ -24,6 +24,8 @@ public class PatientViewController {
     private final MicroservicePatientProxy microservicePatientProxy;
     private final MicroserviceNoteProxy microserviceNoteProxy;
 
+    private static final String REDIRECT_PATIENT_LIST = "redirect:/patient/list";
+
 
     @GetMapping("/patient/list")
     public String patientList(Model model) {
@@ -41,7 +43,7 @@ public class PatientViewController {
             microservicePatientProxy.deletePatient(id);
         }
 
-        return "redirect:/patient/list";
+        return REDIRECT_PATIENT_LIST;
     }
 
     @GetMapping("/patient/add")
@@ -59,7 +61,7 @@ public class PatientViewController {
 
         microservicePatientProxy.savePatient(patientDTO);
 
-        return "redirect:/patient/list";
+        return REDIRECT_PATIENT_LIST;
     }
 
     @GetMapping("/patient/update/{id}")
@@ -78,6 +80,6 @@ public class PatientViewController {
 
         microservicePatientProxy.updatePatient(patientDTO);
 
-        return "redirect:/patient/list";
+        return REDIRECT_PATIENT_LIST;
     }
 }

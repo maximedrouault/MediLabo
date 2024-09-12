@@ -27,6 +27,8 @@ public class NoteViewController {
     private final MicroserviceNoteProxy microserviceNoteProxy;
     private final MicroserviceAssessmentProxy microserviceAssessmentProxy;
 
+    private static final String REDIRECT_NOTE_LIST = "redirect:/note/list/";
+
 
     @GetMapping("/note/list/{patientId}")
     public String noteList(@PathVariable Long patientId, Model model) {
@@ -56,7 +58,7 @@ public class NoteViewController {
 
         microserviceNoteProxy.deleteNote(id);
 
-        return "redirect:/note/list/" + noteDTO.getPatientId();
+        return REDIRECT_NOTE_LIST + noteDTO.getPatientId();
     }
 
     @GetMapping("/note/add/{patientId}")
@@ -79,7 +81,7 @@ public class NoteViewController {
 
         microserviceNoteProxy.saveNote(noteDTO);
 
-        return "redirect:/note/list/" + noteDTO.getPatientId();
+        return REDIRECT_NOTE_LIST + noteDTO.getPatientId();
     }
 
     @GetMapping("/note/update/{id}")
@@ -98,6 +100,6 @@ public class NoteViewController {
 
         microserviceNoteProxy.updateNote(noteDTO);
 
-        return "redirect:/note/list/" + noteDTO.getPatientId();
+        return REDIRECT_NOTE_LIST + noteDTO.getPatientId();
     }
 }
