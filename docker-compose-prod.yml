@@ -97,7 +97,7 @@ services:
     image: maximedrouault/medilabo-patient-api:latest
     restart: always
     ports:
-      - "0:9000"
+      - "9000:9000"
     environment:
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
     deploy:
@@ -148,7 +148,7 @@ services:
     image: maximedrouault/medilabo-note-api:latest
     restart: always
     ports:
-      - "0:9100"
+      - "9100:9100"
     environment:
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
       TZ: Europe/Paris
@@ -180,7 +180,7 @@ services:
     image: maximedrouault/medilabo-assessment-api:latest
     restart: always
     ports:
-      - "0:9200"
+      - "9200:9200"
     environment:
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
     deploy:
